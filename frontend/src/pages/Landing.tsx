@@ -3,10 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { ShoppingBag, Utensils, Clock, Star, ChevronDown, LayoutDashboard, MapPin, Package, Zap, Gift, Heart, Coffee } from 'lucide-react';
 
-const VIDEOS = [
-  'https://assets.mixkit.co/videos/preview/mixkit-top-aerial-shot-of-cooking-in-a-restaurant-kitchen-4263-large.mp4',
-  'https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-chef-adding-oil-to-food-4264-large.mp4',
-  'https://assets.mixkit.co/videos/preview/mixkit-pizza-preparation-in-a-restaurant-4270-large.mp4',
+const SLIDES = [
+  {
+    img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1600&q=80',
+    label: 'Sizzling Street Food',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1600&q=80',
+    label: 'Juicy Burgers',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=1600&q=80',
+    label: 'Aromatic Biryani',
+  },
+  {
+    img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=1600&q=80',
+    label: 'Fresh Pizzas',
+  },
 ];
 
 function AnimatedStat({ end, suffix, label }: { end: number; suffix: string; label: string }) {
@@ -45,33 +58,38 @@ const FEATURES = [
 
 export default function Landing() {
   const navigate = useNavigate();
-  const [videoIdx, setVideoIdx] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const featuresRef = useRef(null);
-
-  const cycleVideo = () => setVideoIdx((i) => (i + 1) % VIDEOS.length);
+  const [slideIdx, setSlideIdx] = useState(0);
 
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    v.src = VIDEOS[videoIdx];
-    v.load();
-    v.play().catch(() => {});
-  }, [videoIdx]);
+    const timer = setInterval(() => setSlideIdx((i) => (i + 1) % SLIDES.length), 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div style={{ color: 'var(--text-primary)' }}>
 
-      {/* ─── HERO: Full-Screen Video ─── */}
+      {/* ─── HERO: Cinematic Slideshow ─── */}
       <section className="relative h-screen overflow-hidden flex items-center justify-center -mt-8">
-        <video
-          ref={videoRef}
-          autoPlay muted playsInline loop={false}
-          onEnded={cycleVideo}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+
+        {/* Slides */}
+        {SLIDES.map((slide, i) => (
+          <div
+            key={i}
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: i === slideIdx ? 1 : 0 }}
+          >
+            <div
+              className="w-full h-full bg-center bg-cover"
+              style={{
+                backgroundImage: `url(${slide.img})`,
+                animation: i === slideIdx ? 'kenBurns 6s ease-in-out forwards' : 'none',
+              }}
+            />
+          </div>
+        ))}
+
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/45 to-black/75 z-10" />
 
         {/* Hero content */}
         <div className="relative z-20 text-center px-4 max-w-4xl mx-auto">
@@ -82,6 +100,14 @@ export default function Landing() {
             </div>
             <span className="text-4xl font-black text-white tracking-tight">Crave<span className="text-[#ff4d00]">Bite</span></span>
           </motion.div>
+
+          {/* Slide food label */}
+          <motion.p
+            key={slideIdx}
+            initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+            className="text-[#ff4d00] font-semibold text-sm tracking-widest uppercase mb-3">
+            🍽 {SLIDES[slideIdx].label}
+          </motion.p>
 
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.7 }}
             className="text-5xl sm:text-7xl font-black text-white leading-tight mb-4">
@@ -106,11 +132,11 @@ export default function Landing() {
             </button>
           </motion.div>
 
-          {/* Video dot indicators */}
+          {/* Slide dot indicators */}
           <div className="flex justify-center space-x-2 mt-10">
-            {VIDEOS.map((_, i) => (
-              <button key={i} onClick={() => setVideoIdx(i)}
-                className={`w-2 h-2 rounded-full transition-all ${i === videoIdx ? 'bg-[#ff4d00] w-6' : 'bg-white/40'}`} />
+            {SLIDES.map((_, i) => (
+              <button key={i} onClick={() => setSlideIdx(i)}
+                className={`h-2 rounded-full transition-all duration-300 ${i === slideIdx ? 'bg-[#ff4d00] w-7' : 'bg-white/40 w-2'}`} />
             ))}
           </div>
         </div>
