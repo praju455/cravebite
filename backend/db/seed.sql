@@ -21,16 +21,28 @@ INSERT INTO delivery_agents (name, phone, vehicle, rating) VALUES
 ('Ganesh', '8876543213', 'Bicycle', 4.2),
 ('Dinesh', '8876543214', 'Bike', 4.7);
 
--- 3. Restaurants (6 restaurants)
+-- 3. Restaurants (20 restaurants)
 INSERT INTO restaurants (name, cuisine_type, city, rating, delivery_time_mins, image_url) VALUES
 ('Burger King', 'Fast Food', 'Bangalore', 4.2, 30, 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80'),
 ('Dominos', 'Italian', 'Bangalore', 4.1, 25, 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=80'),
 ('Meghana Foods', 'Indian', 'Bangalore', 4.8, 45, 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=500&q=80'),
 ('Social', 'Continental', 'Bangalore', 4.5, 40, 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=500&q=80'),
 ('Truffles', 'Cafe', 'Bangalore', 4.6, 35, 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&q=80'),
-('Natural Ice Cream', 'Desserts', 'Bangalore', 4.9, 20, 'https://images.unsplash.com/photo-1563805042-7684c889e1eb?w=500&q=80'),
+('Natural Ice Cream', 'Desserts', 'Bangalore', 4.9, 20, 'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=500&q=80'),
 ('KFC', 'Fast Food', 'Bangalore', 4.3, 25, 'https://images.unsplash.com/photo-1513639776629-7b61b0ac49cb?w=500&q=80'),
-('Paradise Biryani', 'Indian', 'Bangalore', 4.5, 40, 'https://images.unsplash.com/photo-1633383718081-22ac93e3db65?w=500&q=80');
+('Paradise Biryani', 'Indian', 'Bangalore', 4.5, 40, 'https://images.unsplash.com/photo-1633383718081-22ac93e3db65?w=500&q=80'),
+('McDonald''s', 'Fast Food', 'Bangalore', 4.1, 20, 'https://images.unsplash.com/photo-1552895638-f7fe08d2f7d5?w=500&q=80'),
+('Pizza Hut', 'Italian', 'Bangalore', 4.0, 30, 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=500&q=80'),
+('Subway', 'Healthy', 'Bangalore', 4.2, 20, 'https://images.unsplash.com/photo-1509722747041-616f39b57569?w=500&q=80'),
+('Haldiram''s', 'Indian', 'Bangalore', 4.4, 35, 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&q=80'),
+('Barbeque Nation', 'BBQ', 'Bangalore', 4.7, 50, 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80'),
+('Fasos', 'Continental', 'Bangalore', 4.0, 25, 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80'),
+('Wow Momo', 'Chinese', 'Bangalore', 4.3, 30, 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=500&q=80'),
+('Chai Point', 'Cafe', 'Bangalore', 4.2, 20, 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80'),
+('Starbucks', 'Cafe', 'Bangalore', 4.5, 25, 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'),
+('Biryani By Kilo', 'Indian', 'Bangalore', 4.6, 45, 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80'),
+('Theobroma', 'Desserts', 'Bangalore', 4.8, 30, 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80'),
+('China Garden', 'Chinese', 'Bangalore', 4.3, 40, 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&q=80');
 
 -- 4. Menu Items (8 items per restaurant)
 -- Burger King (Rest ID: 1)
@@ -179,3 +191,100 @@ INSERT INTO menu_items (restaurant_id, name, description, price, category, is_ve
 (8, 'Mutton Dum Biryani', 'Special mutton dum biryani', 420.00, 'Mains', FALSE, 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=500&q=80'),
 (8, 'Chicken 65', 'Spicy deep fried chicken', 250.00, 'Starters', FALSE, 'https://images.unsplash.com/photo-1599487405270-87050a41d9c7?w=500&q=80'),
 (8, 'Double Ka Meetha', 'Traditional bread pudding', 120.00, 'Desserts', TRUE, 'https://images.unsplash.com/photo-1589115798835-212d1b73e51a?w=500&q=80');
+
+-- McDonald's (Rest ID: 9)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(9,'McAloo Tikki','Spiced potato patty burger',89.00,'Mains',TRUE,'https://images.unsplash.com/photo-1520072959219-c595dc870360?w=500&q=80'),
+(9,'McChicken','Classic grilled chicken burger',149.00,'Mains',FALSE,'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80'),
+(9,'Small Fries','Classic fries',79.00,'Starters',TRUE,'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=500&q=80'),
+(9,'McFlurry Oreo','Creamy oreo ice cream',99.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1560008581-09826d1de69e?w=500&q=80'),
+(9,'Coke','Refreshing cola',60.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&q=80');
+
+-- Pizza Hut (Rest ID: 10)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(10,'Margherita Pizza','Classic tomato and cheese',249.00,'Mains',TRUE,'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=80'),
+(10,'Chicken Supreme','Loaded chicken pizza',399.00,'Mains',FALSE,'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500&q=80'),
+(10,'Garlic Bread','Toasted garlic bread',129.00,'Starters',TRUE,'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=500&q=80'),
+(10,'Pepsi','Chilled pepsi',60.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&q=80'),
+(10,'Choco Lava Cake','Gooey chocolate cake',109.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=500&q=80');
+
+-- Subway (Rest ID: 11)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(11,'Veggie Delight Sub','Fresh veggie sub',199.00,'Mains',TRUE,'https://images.unsplash.com/photo-1509722747041-616f39b57569?w=500&q=80'),
+(11,'Chicken Teriyaki Sub','Grilled chicken sub',249.00,'Mains',FALSE,'https://images.unsplash.com/photo-1509722747041-616f39b57569?w=500&q=80'),
+(11,'Chips','Classic chips',79.00,'Starters',TRUE,'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=500&q=80'),
+(11,'Iced Tea','Fresh brewed iced tea',89.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80'),
+(11,'Oatmeal Cookie','Soft oatmeal cookie',59.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80');
+
+-- Haldiram's (Rest ID: 12)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(12,'Raj Kachori','Crispy puffed shell with fillings',120.00,'Starters',TRUE,'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&q=80'),
+(12,'Dal Makhani','Rich creamy lentils',220.00,'Mains',TRUE,'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80'),
+(12,'Paneer Tikka','Grilled cottage cheese',250.00,'Starters',TRUE,'https://images.unsplash.com/photo-1567158780111-e40656a2be29?w=500&q=80'),
+(12,'Gulab Jamun','Sweet milk dumplings',80.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1589115798835-212d1b73e51a?w=500&q=80'),
+(12,'Mango Lassi','Sweet yogurt drink',90.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80');
+
+-- Barbeque Nation (Rest ID: 13)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(13,'BBQ Chicken Platter','Grilled chicken with sides',599.00,'Mains',FALSE,'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80'),
+(13,'Mutton Seekh Kebab','Minced mutton skewers',450.00,'Starters',FALSE,'https://images.unsplash.com/photo-1599487405270-87050a41d9c7?w=500&q=80'),
+(13,'Veg Platter','Grilled veggies and paneer',399.00,'Mains',TRUE,'https://images.unsplash.com/photo-1567158780111-e40656a2be29?w=500&q=80'),
+(13,'Ice Cream Sundae','Assorted ice cream',150.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=500&q=80'),
+(13,'Virgin Mojito','Refreshing mint drink',149.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=500&q=80');
+
+-- Fasos (Rest ID: 14)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(14,'Chicken Kathi Roll','Chicken wrap',149.00,'Mains',FALSE,'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80'),
+(14,'Paneer Kathi Roll','Paneer wrap',129.00,'Mains',TRUE,'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=500&q=80'),
+(14,'Crunchy Fries','Spicy fries',89.00,'Starters',TRUE,'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=500&q=80'),
+(14,'Watermelon Juice','Fresh juice',99.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&q=80'),
+(14,'Brownie','Chocolate brownie',99.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80');
+
+-- Wow Momo (Rest ID: 15)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(15,'Veg Momo (8pc)','Steamed veg dumplings',120.00,'Mains',TRUE,'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=500&q=80'),
+(15,'Chicken Momo (8pc)','Steamed chicken dumplings',149.00,'Mains',FALSE,'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=500&q=80'),
+(15,'Fried Momo','Crispy fried momos',159.00,'Mains',TRUE,'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=500&q=80'),
+(15,'Veg Soup','Hot veg soup',89.00,'Starters',TRUE,'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&q=80'),
+(15,'Cold Coffee','Creamy cold coffee',99.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80');
+
+-- Chai Point (Rest ID: 16)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(16,'Masala Chai','Classic spiced tea',40.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80'),
+(16,'Cutting Chai','Small strong tea',30.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80'),
+(16,'Samosa (2pc)','Crispy potato samosa',60.00,'Starters',TRUE,'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&q=80'),
+(16,'Grilled Sandwich','Veg grilled sandwich',99.00,'Mains',TRUE,'https://images.unsplash.com/photo-1509722747041-616f39b57569?w=500&q=80'),
+(16,'Cold Coffee','Chilled coffee',89.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80');
+
+-- Starbucks (Rest ID: 17)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(17,'Caffe Latte','Rich espresso with milk',280.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'),
+(17,'Frappuccino','Blended iced coffee',320.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=500&q=80'),
+(17,'Croissant','Buttery flaky croissant',180.00,'Starters',TRUE,'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=500&q=80'),
+(17,'Blueberry Muffin','Fresh baked muffin',150.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?w=500&q=80'),
+(17,'Cold Brew','Smooth cold brew coffee',300.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80');
+
+-- Biryani By Kilo (Rest ID: 18)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(18,'Chicken Dum Biryani','Slow cooked dum biryani',450.00,'Mains',FALSE,'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80'),
+(18,'Mutton Dum Biryani','Premium mutton biryani',599.00,'Mains',FALSE,'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=500&q=80'),
+(18,'Paneer Dum Biryani','Cottage cheese biryani',380.00,'Mains',TRUE,'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80'),
+(18,'Salan Gravy','Spicy curry side',80.00,'Starters',TRUE,'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80'),
+(18,'Sweet Lassi','Chilled yogurt drink',90.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80');
+
+-- Theobroma (Rest ID: 19)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(19,'Chocolate Truffle Cake','Rich chocolate cake',350.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80'),
+(19,'Brownies','Fudgy chocolate brownies',180.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80'),
+(19,'Croissant Sandwich','Flaky croissant sandwich',220.00,'Mains',TRUE,'https://images.unsplash.com/photo-1509722747041-616f39b57569?w=500&q=80'),
+(19,'Cold Coffee','Creamy blended coffee',180.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&q=80'),
+(19,'Lemon Tart','Tangy lemon pastry',160.00,'Desserts',TRUE,'https://images.unsplash.com/photo-1560008581-09826d1de69e?w=500&q=80');
+
+-- China Garden (Rest ID: 20)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(20,'Hakka Noodles','Stir fried veg noodles',199.00,'Mains',TRUE,'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=500&q=80'),
+(20,'Chicken Manchurian','Indo-chinese chicken gravy',299.00,'Mains',FALSE,'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&q=80'),
+(20,'Spring Rolls','Crispy veg spring rolls',149.00,'Starters',TRUE,'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=500&q=80'),
+(20,'Hot and Sour Soup','Classic chinese soup',139.00,'Starters',TRUE,'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&q=80'),
+(20,'Virgin Mojito','Minty refreshing drink',120.00,'Drinks',TRUE,'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=500&q=80');
+
