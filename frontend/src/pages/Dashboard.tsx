@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useDashboardStats } from '../hooks/useAdmin';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   PieChart, Pie, Cell
@@ -6,44 +6,12 @@ import {
 import { TrendingUp, Users, ShoppingBag, Bike } from 'lucide-react';
 
 export default function Dashboard() {
-  const [kpi, setKpi] = useState(null);
-  const [revenueData, setRevenueData] = useState([]);
-  const [orderStatusData, setOrderStatusData] = useState([]);
-  const [topItems, setTopItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      fetch('http://localhost:5001/api/stats/dashboard').then(r => r.json()),
-      fetch('http://localhost:5001/api/stats/revenue').then(r => r.json()),
-      fetch('http://localhost:5001/api/stats/orders-today').then(r => r.json()),
-      fetch('http://localhost:5001/api/stats/popular-items').then(r => r.json())
-    ]).then(([kpiData, revData, statusData, itemsData]) => {
-      setKpi(kpiData);
-      
-      // Format revenue dates
-      const formattedRev = revData.map(d => ({
-        date: new Date(d.date).toLocaleDateString('en-US', { weekday: 'short' }),
-        revenue: parseFloat(d.revenue)
-      }));
-      setRevenueData(formattedRev);
-
-      // Format status data for pie chart
-      const formattedStatus = statusData.map(d => ({
-        name: d.status,
-        value: parseInt(d.count)
-      }));
-      setOrderStatusData(formattedStatus);
-
-      setTopItems(itemsData);
-      setLoading(false);
-    }).catch(err => {
-      console.error(err);
-      setLoading(false);
-    });
-  }, []);
+  const { data, isLoading: loading } = useDashboardStats();
 
   if (loading) return <div className="text-center py-20 text-xl animate-pulse">Loading Dashboard...</div>;
+  if (!data) return <div className="text-center py-20 text-xl text-red-500">Failed to load stats.</div>;
+
+  const { kpi, revenueData, orderStatusData, topItems } = data;
 
   const COLORS = ['#ff4d00', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ff7300'];
 
@@ -184,14 +152,14 @@ export default function Dashboard() {
   );
 }
 
-function KPICard({ title, value, icon: Icon, color }) {
+function KPICard({ title, value, icon: Icon, color }: any) {
   return (
     <div className="glass-card p-6 flex items-center justify-between">
       <div>
         <p className="text-gray-400 text-sm font-medium mb-1">{title}</p>
         <p className="text-3xl font-bold text-white">{value}</p>
       </div>
-      <div className={`p-4 rounded-xl bg-white/5 ${color}`}>
+      <div className={`p-4 rounded-xl bg-white/5 \${color}`}>
         <Icon className="w-8 h-8" />
       </div>
     </div>
