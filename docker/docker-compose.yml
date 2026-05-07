@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: food_delivery
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../backend/db/schema.sql:/docker-entrypoint-initdb.d/1_schema.sql
+      - ../backend/db/seed.sql:/docker-entrypoint-initdb.d/2_seed.sql
+    networks:
+      - food-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - food-network
+
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=development
+      - PORT=5001
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=food_delivery
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=supersecretjwtkey
+      - JWT_EXPIRES_IN=1h
+      - REFRESH_TOKEN_SECRET=supersecretrefreshkey
+      - REFRESH_TOKEN_EXPIRES_IN=7d
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ../backend/src:/app/src
+    networks:
+      - food-network
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:5001/api
+    volumes:
+      - ../frontend/src:/app/src
+    networks:
+      - food-network
+
+volumes:
+  pgdata:
+
+networks:
+  food-network:
+    driver: bridge
