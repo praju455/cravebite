@@ -1,28 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useRestaurants } from '../hooks/useRestaurants';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import RestaurantCard from '../components/RestaurantCard';
 
 export default function Home() {
-  const [restaurants, setRestaurants] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: restaurants = [], isLoading: loading } = useRestaurants();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCuisine, setSelectedCuisine] = useState('All');
 
   const cuisines = ['All', 'Fast Food', 'Italian', 'Indian', 'Continental', 'Cafe', 'Desserts'];
-
-  useEffect(() => {
-    fetch('http://localhost:5001/api/restaurants')
-      .then(res => res.json())
-      .then(data => {
-        setRestaurants(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Failed to fetch restaurants', err);
-        setLoading(false);
-      });
-  }, []);
 
   const filteredRestaurants = restaurants.filter(r => {
     const matchesSearch = r.name.toLowerCase().includes(searchTerm.toLowerCase());
