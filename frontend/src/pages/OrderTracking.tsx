@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useOrderTracking } from '../hooks/useOrders';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Clock, ChefHat, Bike, MapPin, Phone } from 'lucide-react';
 
 export default function OrderTracking() {
   const { id } = useParams();
-  const [tracking, setTracking] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const parsedId = id ? parseInt(id, 10) : 0;
+  
+  const { data: tracking, isLoading: loading } = useOrderTracking(parsedId);
 
   const statuses = [
     { id: 'Placed', icon: Clock, label: 'Order Placed' },
@@ -15,26 +16,6 @@ export default function OrderTracking() {
     { id: 'Out for Delivery', icon: Bike, label: 'Out for Delivery' },
     { id: 'Delivered', icon: MapPin, label: 'Delivered' }
   ];
-
-  useEffect(() => {
-    // Poll for status updates
-    const fetchTracking = () => {
-      fetch(`http://localhost:5001/api/orders/${id}/track`)
-        .then(res => res.json())
-        .then(data => {
-          setTracking(data);
-          setLoading(false);
-        })
-        .catch(err => {
-          console.error(err);
-          setLoading(false);
-        });
-    };
-
-    fetchTracking();
-    const interval = setInterval(fetchTracking, 5000); // refresh every 5s
-    return () => clearInterval(interval);
-  }, [id]);
 
   if (loading) return <div className="text-center py-20 text-xl animate-pulse">Loading tracking details...</div>;
   if (!tracking || !tracking.order) return <div className="text-center py-20 text-xl">Order not found</div>;
