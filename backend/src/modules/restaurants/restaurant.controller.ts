@@ -15,12 +15,14 @@ export class RestaurantController {
   });
 
   static getById = asyncHandler(async (req: Request, res: Response) => {
-    const restaurant = await RestaurantService.getRestaurantById(parseInt(req.params.id));
+    const restaurantId = Number(req.params.id);
+    const restaurant = await RestaurantService.getRestaurantById(restaurantId);
     res.json(new ApiResponse(200, restaurant));
   });
 
   static getReviews = asyncHandler(async (req: Request, res: Response) => {
-    const reviews = await RestaurantService.getRestaurantReviews(parseInt(req.params.id));
+    const restaurantId = Number(req.params.id);
+    const reviews = await RestaurantService.getRestaurantReviews(restaurantId);
     res.json(new ApiResponse(200, reviews));
   });
 }

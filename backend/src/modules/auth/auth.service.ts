@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { pool } from '../../config/db';
 import { env } from '../../config/env';
 import { ApiError } from '../../utils/ApiError';
@@ -8,6 +8,7 @@ import { ApiError } from '../../utils/ApiError';
 const otpStore = new Map<string, { otp: string; expiresAt: number }>();
 
 const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString();
+const jwtExpiresIn = env.JWT_EXPIRES_IN as SignOptions['expiresIn'];
 
 export class AuthService {
   static async registerUser(data: any) {
@@ -37,7 +38,7 @@ export class AuthService {
     if (!user.password) throw new ApiError(401, 'Invalid credentials');
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new ApiError(401, 'Invalid credentials');
-    const token = jwt.sign({ id: user.user_id, isAdmin: user.is_admin }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
+    const token = jwt.sign({ id: user.user_id, isAdmin: user.is_admin }, env.JWT_SECRET, { expiresIn: jwtExpiresIn });
     return {
       user: { id: user.user_id, name: user.name, email: user.email, isAdmin: user.is_admin },
       token,
@@ -82,7 +83,7 @@ export class AuthService {
 
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     const user = result.rows[0];
-    const token = jwt.sign({ id: user.user_id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
+    const token = jwt.sign({ id: user.user_id }, env.JWT_SECRET, { expiresIn: jwtExpiresIn });
 
     return {
       user: { id: user.user_id, name: user.name, email: user.email },

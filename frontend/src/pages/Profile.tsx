@@ -22,7 +22,7 @@ export default function Profile() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       <div className="glass-card p-8 flex items-center space-x-6">
-        <div className="w-24 h-24 bg-[#ff4d00] rounded-full flex items-center justify-center text-4xl font-bold border-4 border-white/10 shadow-[0_0_20px_rgba(255,77,0,0.5)] uppercase">
+        <div className="w-24 h-24 bg-[#d97706] rounded-full flex items-center justify-center text-4xl font-bold border-4 border-white/10 shadow-[0_0_20px_rgba(217,119,6,0.5)] uppercase">
           {user?.name?.charAt(0) || 'U'}
         </div>
         <div>
@@ -48,9 +48,9 @@ export default function Profile() {
               >
                 <div className="flex items-center space-x-4">
                   <div className={`p-3 rounded-xl ${
-                    order.status === 'Delivered' ? 'bg-green-500/20 text-green-400' :
+                    order.status === 'Delivered' ? 'bg-amber-500/20 text-amber-400' :
                     order.status === 'Cancelled' ? 'bg-red-500/20 text-red-400' :
-                    'bg-[#ff4d00]/20 text-[#ff4d00]'
+                    'bg-orange-600/20 text-orange-600'
                   }`}>
                     <Package className="w-6 h-6" />
                   </div>
@@ -64,9 +64,9 @@ export default function Profile() {
                   <div className="text-right hidden sm:block">
                     <p className="font-bold text-lg">₹{Number(order.total_amount).toFixed(2)}</p>
                     <p className={`text-sm font-medium ${
-                      order.status === 'Delivered' ? 'text-green-400' :
+                      order.status === 'Delivered' ? 'text-amber-400' :
                       order.status === 'Cancelled' ? 'text-red-400' :
-                      'text-[#ff4d00]'
+                      'text-orange-600'
                     }`}>
                       {order.status}
                     </p>
@@ -87,7 +87,7 @@ export default function Profile() {
                       <div className="space-y-2">
                         <p className="font-medium text-gray-300">Payment: <span className="text-white">{order.payment_method} ({order.payment_status})</span></p>
                         {order.status === 'Delivered' && (
-                          <button className="mt-4 flex items-center space-x-2 text-[#ff4d00] hover:text-[#ff6a2b] transition-colors border border-[#ff4d00] px-4 py-2 rounded-lg font-medium">
+                          <button className="mt-4 flex items-center space-x-2 text-[#d97706] hover:text-[#f59e0b] transition-colors border border-[#d97706] px-4 py-2 rounded-lg font-medium">
                             <Star className="w-4 h-4" />
                             <span>Rate & Review</span>
                           </button>
@@ -95,7 +95,7 @@ export default function Profile() {
                       </div>
                       <div className="text-right flex flex-col justify-end sm:hidden">
                         <p className="font-bold text-lg">₹{Number(order.total_amount).toFixed(2)}</p>
-                        <p className="text-sm text-[#ff4d00]">{order.status}</p>
+                        <p className="text-sm text-[#d97706]">{order.status}</p>
                       </div>
                     </div>
                   </motion.div>

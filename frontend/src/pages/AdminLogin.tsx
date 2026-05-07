@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/axiosInstance';
 import { useAdminStore } from '../store/adminStore';
-import { Shield, Mail, Lock, LogIn, RefreshCw, ShoppingBag } from 'lucide-react';
+import { Shield, Mail, Lock, LogIn, RefreshCw, Pizza } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function AdminLogin() {
@@ -37,16 +37,16 @@ export default function AdminLogin() {
       >
         {/* Logo */}
         <div className="flex items-center justify-center space-x-2 mb-8">
-          <ShoppingBag className="w-9 h-9 text-[#ff4d00]" />
+          <Pizza className="w-9 h-9 text-[#d97706]" />
           <span className="text-2xl font-black" style={{ color: 'var(--text-primary)' }}>
-            Crave<span className="text-[#ff4d00]">Bite</span>
+            Crave<span className="text-[#d97706]">Bite</span>
           </span>
         </div>
 
         <div className="glass-card p-8 rounded-2xl border-theme">
           {/* Header */}
           <div className="flex items-center space-x-4 mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#ff4d00] to-[#ff7a00] flex items-center justify-center shadow-lg shadow-[#ff4d00]/30">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#d97706] to-[#f59e0b] flex items-center justify-center shadow-lg shadow-[#d97706]/30">
               <Shield className="text-white w-7 h-7" />
             </div>
             <div>
@@ -99,7 +99,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-[#ff4d00] to-[#ff7a00] text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-[#ff4d00]/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-60"
+              className="w-full bg-gradient-to-r from-[#d97706] to-[#f59e0b] text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-[#d97706]/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-60"
             >
               {loading
                 ? <RefreshCw className="w-4 h-4 animate-spin" />
@@ -119,7 +119,7 @@ export default function AdminLogin() {
 
         <p className="text-center mt-4 text-sm" style={{ color: 'var(--text-muted)' }}>
           Not an admin?{' '}
-          <button onClick={() => navigate('/')} className="text-[#ff4d00] hover:underline font-medium">
+          <button onClick={() => navigate('/')} className="text-[#d97706] hover:underline font-medium">
             Go to Homepage
           </button>
         </p>

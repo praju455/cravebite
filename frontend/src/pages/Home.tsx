@@ -5,7 +5,7 @@ import { Search } from 'lucide-react';
 import RestaurantCard from '../components/RestaurantCard';
 
 export default function Home() {
-  const { data: restaurants = [], isLoading: loading } = useRestaurants();
+  const { data: restaurants = [], isLoading: loading, error } = useRestaurants();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCuisine, setSelectedCuisine] = useState('All');
 
@@ -17,11 +17,16 @@ export default function Home() {
     return matchesSearch && matchesCuisine;
   });
 
+  // Debug logging
+  console.log('Restaurants data:', restaurants);
+  console.log('Loading:', loading);
+  console.log('Error:', error);
+
   return (
     <div className="space-y-12 pb-12">
       {/* Hero Section */}
       <section className="relative rounded-3xl overflow-hidden glass-card p-8 sm:p-16 text-center">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#ff4d00]/20 to-transparent opacity-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#d97706]/20 to-transparent opacity-50"></div>
         <div className="relative z-10 max-w-3xl mx-auto space-y-6">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
@@ -29,7 +34,7 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className="text-5xl sm:text-6xl font-extrabold tracking-tight"
           >
-            Food at your door, <br/><span className="text-[#ff4d00]">faster than ever</span>
+            Food at your door, <br/><span className="text-[#d97706]">faster than ever</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -73,7 +78,7 @@ export default function Home() {
               onClick={() => setSelectedCuisine(cuisine)}
               className={`px-6 py-2 rounded-full whitespace-nowrap font-medium transition-all duration-300 border ${
                 selectedCuisine === cuisine 
-                  ? 'bg-[#ff4d00] text-white border-[#ff4d00] shadow-[0_0_15px_rgba(255,77,0,0.4)]' 
+                  ? 'bg-[#d97706] text-white border-[#d97706] shadow-[0_0_15px_rgba(217,119,6,0.4)]' 
                   : 'bg-white/5 border-white/10 hover:bg-white/10'
               }`}
               style={selectedCuisine !== cuisine ? { color: 'var(--text-secondary)' } : {}}
@@ -92,6 +97,12 @@ export default function Home() {
             {[...Array(6)].map((_, i) => (
               <div key={i} className="glass-card h-72 animate-pulse bg-white/5"></div>
             ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-20 glass-card">
+            <h3 className="text-xl text-red-400 mb-4">Failed to load restaurants</h3>
+            <p className="text-gray-400 mb-4">Please make sure the backend server is running</p>
+            <p className="text-sm text-gray-500">Error: {error?.message || 'Unknown error'}</p>
           </div>
         ) : filteredRestaurants.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

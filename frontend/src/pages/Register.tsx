@@ -22,7 +22,7 @@ export default function Register() {
     <div className="flex justify-center items-center py-10">
       <div className="glass-card p-8 rounded-2xl w-full max-w-lg border-theme">
         <div className="flex items-center justify-center space-x-3 mb-8">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ff4d00] to-[#ff7a00] flex items-center justify-center shadow-lg shadow-[#ff4d00]/20">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#d97706] to-[#f59e0b] flex items-center justify-center shadow-lg shadow-[#d97706]/20">
             <UserPlus className="text-white" size={24} />
           </div>
           <h2 className="text-3xl font-bold">Create Account</h2>
@@ -76,14 +76,14 @@ export default function Register() {
           </div>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-[#ff4d00] to-[#ff7a00] text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-[#ff4d00]/30 transition-all mt-4"
+            className="w-full bg-gradient-to-r from-[#d97706] to-[#f59e0b] text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-[#d97706]/30 transition-all mt-4"
           >
             Sign Up
           </button>
         </form>
         
         <p className="text-center mt-6" style={{color:'var(--text-secondary)'}}>
-          Already have an account? <Link to="/login" className="text-[#ff4d00] hover:underline">Login</Link>
+          Already have an account? <Link to="/login" className="text-[#d97706] hover:underline">Login</Link>
         </p>
       </div>
     </div>

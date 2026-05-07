@@ -36,7 +36,7 @@ export default function Cart() {
         </div>
         <h2 className="text-3xl font-bold mb-4">Your cart is empty</h2>
         <p className="text-gray-400 mb-8">Looks like you haven't added anything yet.</p>
-        <button onClick={() => navigate('/')} className="bg-[#ff4d00] text-white px-8 py-3 rounded-xl font-bold">
+        <button onClick={() => navigate('/')} className="bg-[#d97706] text-white px-8 py-3 rounded-xl font-bold">
           Explore Restaurants
         </button>
       </div>
@@ -112,7 +112,7 @@ export default function Cart() {
           <textarea 
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-[#ff4d00] transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-[#d97706] transition-colors"
             rows="3"
           ></textarea>
         </div>
@@ -130,7 +130,7 @@ export default function Cart() {
                 onClick={() => setMethod(pm.id)}
                 className={`w-full flex items-center space-x-3 p-4 rounded-xl border transition-all ${
                   method === pm.id 
-                    ? 'border-[#ff4d00] bg-[#ff4d00]/10 text-[#ff4d00]' 
+                    ? 'border-[#d97706] bg-[#d97706]/10 text-[#d97706]' 
                     : 'border-white/10 bg-white/5 text-gray-300 hover:bg-white/10'
                 }`}
               >
@@ -158,13 +158,13 @@ export default function Cart() {
           </div>
           <div className="flex justify-between text-xl font-bold mb-8">
             <span>Total</span>
-            <span className="text-[#ff4d00]">₹{(getCartTotal() * 1.05 + 40).toFixed(2)}</span>
+            <span className="text-[#d97706]">₹{(getCartTotal() * 1.05 + 40).toFixed(2)}</span>
           </div>
           
           <button 
             onClick={handlePlaceOrder}
             disabled={loading}
-            className="w-full bg-[#ff4d00] text-white p-4 rounded-xl font-bold text-lg hover:bg-[#ff6a2b] transition-colors shadow-[0_5px_20px_rgba(255,77,0,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+            className="w-full bg-[#d97706] text-white p-4 rounded-xl font-bold text-lg hover:bg-[#f59e0b] transition-colors shadow-[0_5px_20px_rgba(217,119,6,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
           >
             {loading ? (
               <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

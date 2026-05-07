@@ -10,7 +10,7 @@ import {
 import { TrendingUp, Users, ShoppingBag, Bike, LayoutDashboard, ClipboardList, RefreshCw, LogOut } from 'lucide-react';
 import { getDashboardStats } from '../api/admin.api';
 
-const COLORS = ['#ff4d00', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ff7300'];
+const COLORS = ['#d97706', '#f59e0b', '#fb923c', '#FF8042', '#8884d8', '#fbbf24'];
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -36,7 +36,7 @@ function KPICard({ title, value, icon: Icon, color }: any) {
 /* ─── Status Badge ─── */
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
-    'Delivered': 'bg-green-500/20 text-green-400',
+    'Delivered': 'bg-amber-500/20 text-amber-400',
     'Cancelled': 'bg-red-500/20 text-red-400',
     'Out for Delivery': 'bg-blue-500/20 text-blue-400',
     'Placed': 'bg-yellow-500/20 text-yellow-400',
@@ -69,18 +69,18 @@ function OverviewTab() {
       {/* Refresh indicator */}
       <div className="flex justify-end">
         <button onClick={() => refetch()}
-          className="flex items-center space-x-2 text-sm px-4 py-2 rounded-full glass-card hover:text-[#ff4d00] transition-colors"
+          className="flex items-center space-x-2 text-sm px-4 py-2 rounded-full glass-card hover:text-[#d97706] transition-colors"
           style={{ color: 'var(--text-secondary)' }}>
-          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#ff4d00]' : ''}`} />
+          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#d97706]' : ''}`} />
           <span>{isFetching ? 'Refreshing...' : 'Refresh'}</span>
         </button>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <KPICard title="Revenue Today" value={`₹${kpi.revenueToday.toFixed(2)}`} icon={TrendingUp} color="text-green-500" />
+        <KPICard title="Revenue Today" value={`₹${kpi.revenueToday.toFixed(2)}`} icon={TrendingUp} color="text-amber-500" />
         <KPICard title="Orders Today" value={kpi.totalOrdersToday} icon={ShoppingBag} color="text-blue-500" />
-        <KPICard title="Active Deliveries" value={kpi.activeDeliveries} icon={Bike} color="text-[#ff4d00]" />
+        <KPICard title="Active Deliveries" value={kpi.activeDeliveries} icon={Bike} color="text-orange-600" />
         <KPICard title="Total Users" value={kpi.totalUsers} icon={Users} color="text-purple-500" />
       </div>
 
@@ -98,7 +98,7 @@ function OverviewTab() {
                   cursor={{ fill: 'rgba(255,255,255,0.05)' }}
                   contentStyle={{ backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: '8px', color: 'var(--text-primary)' }}
                 />
-                <Bar dataKey="revenue" fill="#ff4d00" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="revenue" fill="#d97706" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -187,7 +187,7 @@ function OverviewTab() {
                       <span className="font-medium">{item.item_name}</span>
                     </td>
                     <td className="px-4 py-3" style={{ color: 'var(--text-secondary)' }}>{item.restaurant_name}</td>
-                    <td className="px-4 py-3 text-right font-bold text-[#ff4d00]">{item.total_sold}</td>
+                    <td className="px-4 py-3 text-right font-bold text-[#d97706]">{item.total_sold}</td>
                   </tr>
                 ))}
               </tbody>
@@ -222,9 +222,9 @@ function UsersTab() {
           </p>
         </div>
         <button onClick={() => refetch()}
-          className="flex items-center space-x-2 text-sm px-4 py-2 rounded-full glass-card hover:text-[#ff4d00] transition-colors"
+          className="flex items-center space-x-2 text-sm px-4 py-2 rounded-full glass-card hover:text-[#d97706] transition-colors"
           style={{ color: 'var(--text-secondary)' }}>
-          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#ff4d00]' : ''}`} />
+          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#d97706]' : ''}`} />
           <span>Refresh</span>
         </button>
       </div>
@@ -285,9 +285,9 @@ function AllOrdersTab() {
           </p>
         </div>
         <button onClick={() => refetch()}
-          className="flex items-center space-x-2 text-sm px-4 py-2 rounded-full glass-card hover:text-[#ff4d00] transition-colors"
+          className="flex items-center space-x-2 text-sm px-4 py-2 rounded-full glass-card hover:text-[#d97706] transition-colors"
           style={{ color: 'var(--text-secondary)' }}>
-          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#ff4d00]' : ''}`} />
+          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#d97706]' : ''}`} />
           <span>Refresh</span>
         </button>
       </div>
@@ -314,7 +314,7 @@ function AllOrdersTab() {
                     <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{order.user_email}</div>
                   </td>
                   <td className="px-5 py-4" style={{ color: 'var(--text-secondary)' }}>{order.restaurant_name}</td>
-                  <td className="px-5 py-4 font-bold text-[#ff4d00]">₹{Number(order.total_amount).toFixed(0)}</td>
+                  <td className="px-5 py-4 font-bold text-[#d97706]">₹{Number(order.total_amount).toFixed(0)}</td>
                   <td className="px-5 py-4">
                     <span className="text-xs px-2 py-1 rounded bg-white/10">{order.payment_method || 'Cash'}</span>
                   </td>
@@ -347,7 +347,7 @@ export default function Dashboard() {
         <div>
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
           <p className="mt-1 text-sm" style={{ color: 'var(--text-secondary)' }}>
-            Logged in as <span className="text-[#ff4d00] font-semibold">{admin?.name}</span> · Live data, auto-refreshes every 30s
+            Logged in as <span className="text-[#d97706] font-semibold">{admin?.name}</span> · Live data, auto-refreshes every 30s
           </p>
         </div>
         <button onClick={handleLogout}
@@ -366,10 +366,10 @@ export default function Dashboard() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center space-x-2 px-5 py-3 text-sm font-semibold border-b-2 transition-colors ${
               activeTab === tab.id
-                ? 'border-[#ff4d00] text-[#ff4d00]'
-                : 'border-transparent hover:text-[#ff4d00]'
+                ? 'border-[#d97706] text-[#d97706]'
+                : 'border-transparent hover:text-[#d97706]'
             }`}
-            style={{ color: activeTab === tab.id ? '#ff4d00' : 'var(--text-secondary)' }}
+            style={{ color: activeTab === tab.id ? '#d97706' : 'var(--text-secondary)' }}
           >
             <tab.icon className="w-4 h-4" />
             <span>{tab.label}</span>

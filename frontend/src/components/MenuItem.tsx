@@ -14,7 +14,7 @@ export default function MenuItem({ item, onAdd }) {
           </div>
           <h4 className="text-lg font-bold text-white">{item.name}</h4>
         </div>
-        <p className="text-[#ff4d00] font-medium mb-2">₹{Number(item.price).toFixed(2)}</p>
+        <p className="text-[#d97706] font-medium mb-2">₹{Number(item.price).toFixed(2)}</p>
         <p className="text-sm text-gray-400 line-clamp-2">{item.description}</p>
       </div>
       
@@ -26,7 +26,7 @@ export default function MenuItem({ item, onAdd }) {
         )}
         <button 
           onClick={() => onAdd(item)}
-          className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-green-600 px-4 py-1.5 rounded-lg font-bold shadow-lg text-sm border border-gray-200 hover:bg-gray-50 flex items-center space-x-1 uppercase"
+          className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-white text-amber-600 px-4 py-1.5 rounded-lg font-bold shadow-lg text-sm border border-gray-200 hover:bg-gray-50 flex items-center space-x-1 uppercase"
         >
           <span>Add</span>
           <Plus className="w-4 h-4" />

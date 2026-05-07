@@ -39,7 +39,7 @@ export default function Restaurant() {
                 <span className="font-bold text-white">{Number(restaurant.rating).toFixed(1)}</span>
               </div>
               <div className="flex items-center space-x-1 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-md">
-                <Clock className="w-5 h-5 text-[#ff4d00]" />
+                <Clock className="w-5 h-5 text-[#d97706]" />
                 <span className="font-bold text-white">{restaurant.delivery_time_mins} mins</span>
               </div>
               {!restaurant.is_open && (
@@ -78,7 +78,7 @@ export default function Restaurant() {
             <div className="max-w-3xl mx-auto pointer-events-auto">
               <button 
                 onClick={() => navigate('/cart')}
-                className="w-full bg-[#ff4d00] text-white p-4 rounded-2xl font-bold flex justify-between items-center shadow-[0_10px_30px_rgba(255,77,0,0.5)] hover:bg-[#ff6a2b] transition-colors"
+                className="w-full bg-[#d97706] text-white p-4 rounded-2xl font-bold flex justify-between items-center shadow-[0_10px_30px_rgba(217,119,6,0.5)] hover:bg-[#f59e0b] transition-colors"
               >
                 <div className="flex items-center space-x-2">
                   <span className="bg-black/20 px-3 py-1 rounded-lg">{getCartCount()} items</span>

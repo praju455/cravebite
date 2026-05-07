@@ -48,7 +48,7 @@ export default function Login() {
       >
         {/* Header */}
         <div className="flex items-center justify-center space-x-3 mb-8">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ff4d00] to-[#ff7a00] flex items-center justify-center shadow-lg shadow-[#ff4d00]/20">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#d97706] to-[#f59e0b] flex items-center justify-center shadow-lg shadow-[#d97706]/20">
             {step === 'email' ? <LogIn className="text-white" size={22} /> : <Shield className="text-white" size={22} />}
           </div>
           <div>
@@ -89,7 +89,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-[#ff4d00] to-[#ff7a00] text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-[#ff4d00]/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-60"
+                className="w-full bg-gradient-to-r from-[#d97706] to-[#f59e0b] text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-[#d97706]/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-60"
               >
                 {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><span>Send OTP</span><ArrowRight className="w-4 h-4" /></>}
               </button>
@@ -98,9 +98,9 @@ export default function Login() {
             <motion.form key="otp" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleVerifyOtp} className="space-y-5">
               {/* Demo OTP display */}
               {demoOtp && (
-                <div className="rounded-xl p-4 text-center border" style={{ borderColor: 'var(--accent)', background: 'rgba(255,77,0,0.08)' }}>
+                <div className="rounded-xl p-4 text-center border" style={{ borderColor: 'var(--accent)', background: 'rgba(15,118,110,0.08)' }}>
                   <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>🔐 Demo OTP (would be sent via SMS)</p>
-                  <p className="text-3xl font-mono font-bold tracking-widest text-[#ff4d00]">{demoOtp}</p>
+                  <p className="text-3xl font-mono font-bold tracking-widest text-[#d97706]">{demoOtp}</p>
                 </div>
               )}
               <div>
@@ -120,7 +120,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading || otp.length !== 6}
-                className="w-full bg-gradient-to-r from-[#ff4d00] to-[#ff7a00] text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-[#ff4d00]/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-60"
+                className="w-full bg-gradient-to-r from-[#d97706] to-[#f59e0b] text-white py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-[#d97706]/30 transition-all flex items-center justify-center space-x-2 disabled:opacity-60"
               >
                 {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><span>Verify & Login</span><Shield className="w-4 h-4" /></>}
               </button>
@@ -133,7 +133,7 @@ export default function Login() {
         </AnimatePresence>
 
         <p className="text-center mt-6 text-sm" style={{ color: 'var(--text-secondary)' }}>
-          Don't have an account? <Link to="/register" className="text-[#ff4d00] hover:underline font-medium">Sign up</Link>
+          Don't have an account? <Link to="/register" className="text-[#d97706] hover:underline font-medium">Sign up</Link>
         </p>
       </motion.div>
     </div>

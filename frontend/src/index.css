@@ -18,9 +18,9 @@
   --text-secondary: rgba(255, 255, 255, 0.6);
   --text-muted: rgba(255, 255, 255, 0.35);
 
-  --accent: #ff4d00;
-  --accent-hover: #ff6a2b;
-  --accent-shadow: rgba(255, 77, 0, 0.35);
+  --accent: #d97706;
+  --accent-hover: #f59e0b;
+  --accent-shadow: rgba(217, 119, 6, 0.35);
 
   --scrollbar-track: #0a0a0a;
   --scrollbar-thumb: rgba(255, 255, 255, 0.2);
@@ -50,9 +50,9 @@
   --text-secondary: rgba(0, 0, 0, 0.72);
   --text-muted: rgba(0, 0, 0, 0.52);
 
-  --accent: #ff4d00;
-  --accent-hover: #d93f00;
-  --accent-shadow: rgba(255, 77, 0, 0.25);
+  --accent: #d97706;
+  --accent-hover: #b45309;
+  --accent-shadow: rgba(217, 119, 6, 0.25);
 
   --scrollbar-track: #f0f0ea;
   --scrollbar-thumb: rgba(0, 0, 0, 0.2);
@@ -76,6 +76,30 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.landing-page {
+  --bg-primary: #071311;
+  --bg-secondary: #0d1c19;
+  --bg-card: rgba(255, 255, 255, 0.06);
+  --bg-card-hover: rgba(255, 255, 255, 0.1);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.68);
+  --text-muted: rgba(255, 255, 255, 0.45);
+  background: #071311;
+}
+
+.light .landing-page {
+  --bg-primary: #f7f4e8;
+  --bg-secondary: #ebe5d3;
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(217, 119, 6, 0.18);
+  --text-primary: #17231f;
+  --text-secondary: rgba(23, 35, 31, 0.72);
+  --text-muted: rgba(23, 35, 31, 0.5);
+  background: #f7f4e8;
 }
 
 /* ============================================

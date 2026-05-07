@@ -4,20 +4,52 @@ import { ApiError } from '../../utils/ApiError';
 
 export class RestaurantService {
   static async getAllRestaurants() {
-    const cached = await redisClient.get('restaurants:all');
-    if (cached) return JSON.parse(cached);
+    // Try Redis cache only if connected
+    if (redisClient.isOpen) {
+      try {
+        const cached = await redisClient.get('restaurants:all');
+        if (cached) return JSON.parse(cached);
+      } catch (err) {
+        // Continue without cache if Redis fails
+      }
+    }
 
     const result = await pool.query('SELECT * FROM restaurants');
-    await redisClient.setEx('restaurants:all', 300, JSON.stringify(result.rows)); // cache for 5 min
+    
+    // Cache only if Redis is connected
+    if (redisClient.isOpen) {
+      try {
+        await redisClient.setEx('restaurants:all', 300, JSON.stringify(result.rows));
+      } catch (err) {
+        // Continue without caching if Redis fails
+      }
+    }
+    
     return result.rows;
   }
 
   static async getTopRestaurants() {
-    const cached = await redisClient.get('restaurants:top');
-    if (cached) return JSON.parse(cached);
+    // Try Redis cache only if connected
+    if (redisClient.isOpen) {
+      try {
+        const cached = await redisClient.get('restaurants:top');
+        if (cached) return JSON.parse(cached);
+      } catch (err) {
+        // Continue without cache if Redis fails
+      }
+    }
 
     const result = await pool.query('SELECT * FROM top_restaurants_view LIMIT 10');
-    await redisClient.setEx('restaurants:top', 600, JSON.stringify(result.rows)); // cache for 10 min
+    
+    // Cache only if Redis is connected
+    if (redisClient.isOpen) {
+      try {
+        await redisClient.setEx('restaurants:top', 600, JSON.stringify(result.rows));
+      } catch (err) {
+        // Continue without caching if Redis fails
+      }
+    }
+    
     return result.rows;
   }
 

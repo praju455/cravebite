@@ -37,7 +37,7 @@ export default function OrderTracking() {
           
           {/* Active Progress Bar */}
           <motion.div 
-            className="absolute top-6 left-0 h-1 bg-[#ff4d00] rounded-full"
+            className="absolute top-6 left-0 h-1 bg-[#d97706] rounded-full"
             initial={{ width: "0%" }}
             animate={{ width: `${(currentStatusIndex / (statuses.length - 1)) * 100}%` }}
             transition={{ duration: 0.5 }}
@@ -55,13 +55,13 @@ export default function OrderTracking() {
                     initial={{ scale: 0.8 }}
                     animate={{ scale: isCurrent ? 1.2 : 1 }}
                     className={`w-12 h-12 rounded-full flex items-center justify-center z-10 border-4 border-[#0a0a0a] transition-colors duration-300 ${
-                      isCompleted ? 'bg-[#ff4d00] text-white shadow-[0_0_15px_rgba(255,77,0,0.5)]' : 'bg-gray-800 text-gray-500'
+                      isCompleted ? 'bg-[#d97706] text-white shadow-[0_0_15px_rgba(217,119,6,0.5)]' : 'bg-gray-800 text-gray-500'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
                   </motion.div>
                   <p className={`mt-4 text-sm font-medium text-center hidden sm:block ${
-                    isCurrent ? 'text-[#ff4d00]' : isCompleted ? 'text-white' : 'text-gray-500'
+                    isCurrent ? 'text-[#d97706]' : isCompleted ? 'text-white' : 'text-gray-500'
                   }`}>
                     {status.label}
                   </p>
@@ -76,7 +76,7 @@ export default function OrderTracking() {
         {/* Delivery Details */}
         <div className="glass-card p-8">
           <h2 className="text-xl font-bold mb-6 flex items-center space-x-2">
-            <Bike className="text-[#ff4d00]" />
+            <Bike className="text-[#d97706]" />
             <span>Delivery Agent</span>
           </h2>
           
@@ -91,7 +91,7 @@ export default function OrderTracking() {
                   <p className="text-gray-400 text-sm">{tracking.delivery.vehicle} • ★ {Number(tracking.delivery.rating).toFixed(1)}</p>
                 </div>
               </div>
-              <a href={`tel:${tracking.delivery.agent_phone}`} className="w-12 h-12 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center border border-green-500/50 hover:bg-green-500/30 transition-colors">
+              <a href={`tel:${tracking.delivery.agent_phone}`} className="w-12 h-12 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center border border-amber-500/50 hover:bg-amber-500/30 transition-colors">
                 <Phone className="w-5 h-5" />
               </a>
             </div>

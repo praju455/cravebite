@@ -6,7 +6,8 @@ import { apiLimiter } from '../../middleware/rateLimiter';
 
 export class MenuController {
   static getMenu = asyncHandler(async (req: Request, res: Response) => {
-    const menu = await MenuService.getMenuByRestaurant(parseInt(req.params.restaurant_id));
+    const restaurantId = Number(req.params.restaurant_id);
+    const menu = await MenuService.getMenuByRestaurant(restaurantId);
     res.json(new ApiResponse(200, menu));
   });
 }

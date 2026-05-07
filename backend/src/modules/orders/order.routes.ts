@@ -58,7 +58,8 @@ export class OrderController {
   });
 
   static trackOrder = asyncHandler(async (req: Request, res: Response) => {
-    const tracking = await OrderService.trackOrder(parseInt(req.params.id));
+    const orderId = Number(req.params.id);
+    const tracking = await OrderService.trackOrder(orderId);
     res.json(new ApiResponse(200, tracking));
   });
 }

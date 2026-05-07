@@ -29,14 +29,14 @@ export default function RestaurantCard({ restaurant }) {
           
           <div className="p-5">
             <div className="flex justify-between items-start mb-2">
-              <h3 className="text-xl font-bold text-white group-hover:text-[#ff4d00] transition-colors">{restaurant.name}</h3>
+              <h3 className="text-xl font-bold text-white group-hover:text-[#d97706] transition-colors">{restaurant.name}</h3>
             </div>
             
             <p className="text-sm mb-4" style={{color:'var(--text-secondary)'}}>{restaurant.cuisine_type}</p>
             
             <div className="flex items-center text-sm space-x-4" style={{color:'var(--text-secondary)'}}>
               <div className="flex items-center space-x-1 bg-white/5 px-2 py-1 rounded-md border border-white/5">
-                <Clock className="w-4 h-4 text-[#ff4d00]" />
+                <Clock className="w-4 h-4 text-[#d97706]" />
                 <span>{restaurant.delivery_time_mins} mins</span>
               </div>
             </div>

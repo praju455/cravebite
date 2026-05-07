@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, User, Sun, Moon, LogOut } from 'lucide-react';
+import { Pizza, User, Sun, Moon, LogOut } from 'lucide-react';
 import { useThemeStore } from '../store/themeStore';
 import { useAuthStore } from '../store/authStore';
 
@@ -21,7 +21,7 @@ export default function Navbar() {
           {token && user ? (
             <div className="flex items-center space-x-3">
               {/* Avatar */}
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#ff4d00] to-[#ff7a00] flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-[#ff4d00]/20 flex-shrink-0">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#d97706] to-[#f59e0b] flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-[#d97706]/20 flex-shrink-0">
                 {initials}
               </div>
               <div className="hidden sm:block">
@@ -31,9 +31,9 @@ export default function Navbar() {
             </div>
           ) : (
             <Link to="/" className="flex items-center space-x-2">
-              <ShoppingBag className="w-8 h-8 text-[#ff4d00]" />
+              <Pizza className="w-8 h-8 text-[#d97706]" />
               <span className="font-bold text-xl tracking-tight" style={{ color: 'var(--text-primary)' }}>
-                Crave<span className="text-[#ff4d00]">Bite</span>
+                Crave<span className="text-[#d97706]">Bite</span>
               </span>
             </Link>
           )}
@@ -71,12 +71,12 @@ export default function Navbar() {
               onClick={toggleTheme}
               title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               className="flex items-center justify-center w-9 h-9 rounded-full transition-all duration-300 hover:scale-110"
-              style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', color: isDark ? '#facc15' : '#ff4d00' }}>
+              style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', color: isDark ? '#facc15' : '#d97706' }}>
               {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
             <Link to="/cart"
-              className="bg-[#ff4d00] text-white px-4 py-2 rounded-full font-medium hover:bg-[#ff6a2b] transition-colors"
+              className="bg-[#d97706] text-white px-4 py-2 rounded-full font-medium hover:bg-[#f59e0b] transition-colors"
               style={{ boxShadow: '0 0 15px var(--accent-shadow)' }}>
               Cart
             </Link>
