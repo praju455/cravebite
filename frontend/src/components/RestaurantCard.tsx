@@ -32,9 +32,9 @@ export default function RestaurantCard({ restaurant }) {
               <h3 className="text-xl font-bold text-white group-hover:text-[#ff4d00] transition-colors">{restaurant.name}</h3>
             </div>
             
-            <p className="text-gray-400 text-sm mb-4">{restaurant.cuisine_type}</p>
+            <p className="text-sm mb-4" style={{color:'var(--text-secondary)'}}>{restaurant.cuisine_type}</p>
             
-            <div className="flex items-center text-sm text-gray-300 space-x-4">
+            <div className="flex items-center text-sm space-x-4" style={{color:'var(--text-secondary)'}}>
               <div className="flex items-center space-x-1 bg-white/5 px-2 py-1 rounded-md border border-white/5">
                 <Clock className="w-4 h-4 text-[#ff4d00]" />
                 <span>{restaurant.delivery_time_mins} mins</span>

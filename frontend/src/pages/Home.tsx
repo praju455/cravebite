@@ -47,11 +47,12 @@ export default function Home() {
             className="max-w-xl mx-auto relative mt-8"
           >
             <div className="relative flex items-center w-full h-14 rounded-full focus-within:shadow-lg bg-white/10 overflow-hidden border border-white/20 backdrop-blur-md">
-              <div className="grid place-items-center h-full w-12 text-gray-300">
+          <div className="grid place-items-center h-full w-12" style={{color:'var(--text-muted)'}}>
                 <Search className="h-6 w-6" />
               </div>
               <input
-                className="peer h-full w-full outline-none text-sm text-white bg-transparent pr-4 placeholder-gray-400"
+                className="peer h-full w-full outline-none text-sm bg-transparent pr-4"
+                style={{color:'var(--text-primary)'}}
                 type="text"
                 id="search"
                 placeholder="Search for restaurants or cuisines..."
@@ -73,8 +74,9 @@ export default function Home() {
               className={`px-6 py-2 rounded-full whitespace-nowrap font-medium transition-all duration-300 border ${
                 selectedCuisine === cuisine 
                   ? 'bg-[#ff4d00] text-white border-[#ff4d00] shadow-[0_0_15px_rgba(255,77,0,0.4)]' 
-                  : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10'
+                  : 'bg-white/5 border-white/10 hover:bg-white/10'
               }`}
+              style={selectedCuisine !== cuisine ? { color: 'var(--text-secondary)' } : {}}
             >
               {cuisine}
             </button>

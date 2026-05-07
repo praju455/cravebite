@@ -43,12 +43,12 @@
   --bg-input: #ffffff;
   --bg-nav: rgba(245, 245, 240, 0.9);
 
-  --border-color: rgba(0, 0, 0, 0.08);
-  --border-input: rgba(0, 0, 0, 0.15);
+  --border-color: rgba(0, 0, 0, 0.12);
+  --border-input: rgba(0, 0, 0, 0.2);
 
-  --text-primary: #111111;
-  --text-secondary: rgba(0, 0, 0, 0.6);
-  --text-muted: rgba(0, 0, 0, 0.38);
+  --text-primary: #0d0d0d;
+  --text-secondary: rgba(0, 0, 0, 0.72);
+  --text-muted: rgba(0, 0, 0, 0.52);
 
   --accent: #ff4d00;
   --accent-hover: #d93f00;
@@ -59,7 +59,7 @@
   --scrollbar-thumb-hover: rgba(0, 0, 0, 0.38);
 
   --chart-grid: rgba(0,0,0,0.08);
-  --chart-axis: rgba(0,0,0,0.5);
+  --chart-axis: rgba(0,0,0,0.6);
   --tooltip-bg: #ffffff;
   --tooltip-border: rgba(0,0,0,0.1);
 }
