@@ -1,27 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useAuthStore } from '../store/authStore';
+import { useOrderHistory } from '../hooks/useOrders';
 import { Package, ChevronDown, ChevronUp, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Profile() {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [expandedOrder, setExpandedOrder] = useState(null);
-  
-  // Dummy user for demo
-  const userId = 1;
-
-  useEffect(() => {
-    fetch(`http://localhost:5001/api/orders/user/${userId}`)
-      .then(res => res.json())
-      .then(data => {
-        setOrders(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, [userId]);
+  const user = useAuthStore(state => state.user);
+  const { data: orders = [], isLoading: loading } = useOrderHistory();
+  const [expandedOrder, setExpandedOrder] = useState<number | null>(null);
 
   const toggleOrder = (id) => {
     if (expandedOrder === id) {
@@ -36,12 +22,12 @@ export default function Profile() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       <div className="glass-card p-8 flex items-center space-x-6">
-        <div className="w-24 h-24 bg-[#ff4d00] rounded-full flex items-center justify-center text-4xl font-bold border-4 border-white/10 shadow-[0_0_20px_rgba(255,77,0,0.5)]">
-          R
+        <div className="w-24 h-24 bg-[#ff4d00] rounded-full flex items-center justify-center text-4xl font-bold border-4 border-white/10 shadow-[0_0_20px_rgba(255,77,0,0.5)] uppercase">
+          {user?.name?.charAt(0) || 'U'}
         </div>
         <div>
-          <h1 className="text-3xl font-bold">Rahul Sharma</h1>
-          <p className="text-gray-400">rahul@example.com • +91 9876543210</p>
+          <h1 className="text-3xl font-bold">{user?.name || 'User'}</h1>
+          <p className="text-gray-400">{user?.email}</p>
         </div>
       </div>
 
