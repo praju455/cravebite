@@ -1,17 +1,17 @@
 -- Seed Data for Online Food Delivery App
 
--- 1. Users (10 users in Bangalore)
-INSERT INTO users (name, email, phone, address) VALUES
-('Rahul Sharma', 'rahul@example.com', '9876543210', '123, 1st Main, Indiranagar, Bangalore'),
-('Priya Singh', 'priya@example.com', '9876543211', '45, 2nd Cross, Koramangala, Bangalore'),
-('Amit Kumar', 'amit@example.com', '9876543212', '789, 3rd Block, Jayanagar, Bangalore'),
-('Sneha Reddy', 'sneha@example.com', '9876543213', '12, 4th Phase, JP Nagar, Bangalore'),
-('Vikram Patel', 'vikram@example.com', '9876543214', '34, 5th Main, HSR Layout, Bangalore'),
-('Pooja Desai', 'pooja@example.com', '9876543215', '56, 6th Cross, BTM Layout, Bangalore'),
-('Karan Johar', 'karan@example.com', '9876543216', '78, 7th Block, Whitefield, Bangalore'),
-('Neha Gupta', 'neha@example.com', '9876543217', '90, 8th Main, Marathahalli, Bangalore'),
-('Rohan Verma', 'rohan@example.com', '9876543218', '11, 9th Cross, Electronic City, Bangalore'),
-('Anjali Menon', 'anjali@example.com', '9876543219', '22, 10th Main, Bellandur, Bangalore');
+-- 1. Users (10 users in Bangalore) — password for all: "password123"
+INSERT INTO users (name, email, phone, address, password) VALUES
+('Rahul Sharma', 'rahul@example.com', '9876543210', '123, 1st Main, Indiranagar, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu'),
+('Priya Singh', 'priya@example.com', '9876543211', '45, 2nd Cross, Koramangala, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu'),
+('Amit Kumar', 'amit@example.com', '9876543212', '789, 3rd Block, Jayanagar, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu'),
+('Sneha Reddy', 'sneha@example.com', '9876543213', '12, 4th Phase, JP Nagar, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu'),
+('Vikram Patel', 'vikram@example.com', '9876543214', '34, 5th Main, HSR Layout, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu'),
+('Pooja Desai', 'pooja@example.com', '9876543215', '56, 6th Cross, BTM Layout, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu'),
+('Karan Johar', 'karan@example.com', '9876543216', '78, 7th Block, Whitefield, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu'),
+('Neha Gupta', 'neha@example.com', '9876543217', '90, 8th Main, Marathahalli, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu'),
+('Rohan Verma', 'rohan@example.com', '9876543218', '11, 9th Cross, Electronic City, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu'),
+('Anjali Menon', 'anjali@example.com', '9876543219', '22, 10th Main, Bellandur, Bangalore', '$2b$10$ZWIIUdE4I.jvKGVh9SJPo.IrOrORviE8asd9xK8frYun7rtRNCvUu');
 
 -- 2. Delivery Agents (5 agents)
 INSERT INTO delivery_agents (name, phone, vehicle, rating) VALUES

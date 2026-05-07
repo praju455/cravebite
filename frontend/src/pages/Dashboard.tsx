@@ -159,7 +159,7 @@ function KPICard({ title, value, icon: Icon, color }: any) {
         <p className="text-gray-400 text-sm font-medium mb-1">{title}</p>
         <p className="text-3xl font-bold text-white">{value}</p>
       </div>
-      <div className={`p-4 rounded-xl bg-white/5 \${color}`}>
+      <div className={`p-4 rounded-xl bg-white/5 ${color}`}>
         <Icon className="w-8 h-8" />
       </div>
     </div>
