@@ -1,54 +1,173 @@
 @import "tailwindcss";
 
-@theme {
-  --color-dark-bg: #0a0a0a;
-  --color-accent: #ff4d00;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: rgba(255, 255, 255, 0.6);
-  --color-glass-bg: rgba(255, 255, 255, 0.05);
-  --color-glass-border: rgba(255, 255, 255, 0.08);
+/* ============================================
+   DESIGN TOKENS — Dark Mode (default)
+   ============================================ */
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-input: #1a1a1a;
+  --bg-nav: rgba(10, 10, 10, 0.85);
+
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-input: rgba(255, 255, 255, 0.1);
+
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.35);
+
+  --accent: #ff4d00;
+  --accent-hover: #ff6a2b;
+  --accent-shadow: rgba(255, 77, 0, 0.35);
+
+  --scrollbar-track: #0a0a0a;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.4);
+
+  --chart-grid: rgba(255,255,255,0.08);
+  --chart-axis: rgba(255,255,255,0.5);
+  --tooltip-bg: #1a1a1a;
+  --tooltip-border: rgba(255,255,255,0.1);
 }
 
+/* ============================================
+   LIGHT MODE TOKENS
+   ============================================ */
+.light {
+  --bg-primary: #f5f5f0;
+  --bg-secondary: #efefea;
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --bg-card-hover: rgba(255, 255, 255, 0.92);
+  --bg-input: #ffffff;
+  --bg-nav: rgba(245, 245, 240, 0.9);
+
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-input: rgba(0, 0, 0, 0.15);
+
+  --text-primary: #111111;
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --text-muted: rgba(0, 0, 0, 0.38);
+
+  --accent: #ff4d00;
+  --accent-hover: #d93f00;
+  --accent-shadow: rgba(255, 77, 0, 0.25);
+
+  --scrollbar-track: #f0f0ea;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.38);
+
+  --chart-grid: rgba(0,0,0,0.08);
+  --chart-axis: rgba(0,0,0,0.5);
+  --tooltip-bg: #ffffff;
+  --tooltip-border: rgba(0,0,0,0.1);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
 body {
-  background-color: var(--color-dark-bg);
-  color: var(--color-text-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Glassmorphism utility */
+/* ============================================
+   GLASS CARD — adapts to theme
+   ============================================ */
 .glass-card {
-  background-color: var(--color-glass-bg);
+  background-color: var(--bg-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--color-glass-border);
+  border: 1px solid var(--border-color);
   border-radius: 1rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+  background-color: var(--bg-card-hover);
 }
 
 .glass-panel {
-  background-color: rgba(10, 10, 10, 0.8);
+  background-color: var(--bg-nav);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-left: 1px solid var(--color-glass-border);
+  border-left: 1px solid var(--border-color);
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* ============================================
+   FORM INPUTS — theme-aware
+   ============================================ */
+.theme-input {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-input);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, background-color 0.3s ease;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--color-dark-bg);
+.theme-input::placeholder {
+  color: var(--text-muted);
 }
 
+.theme-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+/* ============================================
+   TEXT UTILITIES — theme-aware
+   ============================================ */
+.text-theme-primary { color: var(--text-primary); }
+.text-theme-secondary { color: var(--text-secondary); }
+.text-theme-muted { color: var(--text-muted); }
+.bg-theme-card { background-color: var(--bg-card); }
+.border-theme { border-color: var(--border-color); }
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
+/* ============================================
+   THEME TOGGLE BUTTON
+   ============================================ */
+.theme-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: var(--border-color);
+  border: 1px solid var(--border-input);
+  cursor: pointer;
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+}
+
+.theme-toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: transform 0.3s ease;
+  box-shadow: 0 0 6px var(--accent-shadow);
+}
+
+.light .theme-toggle::after {
+  transform: translateX(20px);
 }

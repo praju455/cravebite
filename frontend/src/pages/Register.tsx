@@ -20,7 +20,7 @@ export default function Register() {
 
   return (
     <div className="flex justify-center items-center py-10">
-      <div className="glass-card p-8 rounded-2xl w-full max-w-lg border border-white/10">
+      <div className="glass-card p-8 rounded-2xl w-full max-w-lg border-theme">
         <div className="flex items-center justify-center space-x-3 mb-8">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ff4d00] to-[#ff7a00] flex items-center justify-center shadow-lg shadow-[#ff4d00]/20">
             <UserPlus className="text-white" size={24} />
@@ -36,7 +36,7 @@ export default function Register() {
             <input
               type="text"
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff4d00]"
+              className="w-full rounded-xl px-4 py-3 focus:outline-none theme-input"
               required
             />
           </div>
@@ -45,7 +45,7 @@ export default function Register() {
             <input
               type="email"
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff4d00]"
+              className="w-full rounded-xl px-4 py-3 focus:outline-none theme-input"
               required
             />
           </div>
@@ -54,7 +54,7 @@ export default function Register() {
             <input
               type="password"
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff4d00]"
+              className="w-full rounded-xl px-4 py-3 focus:outline-none theme-input"
               required
             />
           </div>
@@ -63,14 +63,14 @@ export default function Register() {
             <input
               type="tel"
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff4d00]"
+              className="w-full rounded-xl px-4 py-3 focus:outline-none theme-input"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-400 mb-2">Address</label>
             <textarea
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              className="w-full bg-[#1a1a1a] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#ff4d00]"
+              className="w-full rounded-xl px-4 py-3 focus:outline-none theme-input"
               rows={2}
             ></textarea>
           </div>
@@ -82,7 +82,7 @@ export default function Register() {
           </button>
         </form>
         
-        <p className="text-center text-gray-400 mt-6">
+        <p className="text-center mt-6" style={{color:'var(--text-secondary)'}}>
           Already have an account? <Link to="/login" className="text-[#ff4d00] hover:underline">Login</Link>
         </p>
       </div>
