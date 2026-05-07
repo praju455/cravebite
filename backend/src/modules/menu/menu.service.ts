@@ -4,8 +4,16 @@ import { redisClient } from '../../config/redis';
 export class MenuService {
   static async getMenuByRestaurant(restaurantId: number) {
     const cacheKey = `menu:${restaurantId}`;
-    const cached = await redisClient.get(cacheKey);
-    if (cached) return JSON.parse(cached);
+    
+    // Try Redis cache only if connected
+    if (redisClient.isOpen) {
+      try {
+        const cached = await redisClient.get(cacheKey);
+        if (cached) return JSON.parse(cached);
+      } catch (err) {
+        // Continue without cache if Redis fails
+      }
+    }
 
     const result = await pool.query('SELECT * FROM menu_items WHERE restaurant_id = $1 AND is_available = TRUE', [restaurantId]);
     
@@ -16,7 +24,15 @@ export class MenuService {
       return acc;
     }, {});
 
-    await redisClient.setEx(cacheKey, 600, JSON.stringify(menuByCategory)); // cache for 10 min
+    // Cache only if Redis is connected
+    if (redisClient.isOpen) {
+      try {
+        await redisClient.setEx(cacheKey, 600, JSON.stringify(menuByCategory));
+      } catch (err) {
+        // Continue without caching if Redis fails
+      }
+    }
+    
     return menuByCategory;
   }
 }
