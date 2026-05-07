@@ -1,32 +1,24 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Star, Clock, Info } from 'lucide-react';
 import MenuItem from '../components/MenuItem';
-import { useCart } from '../components/CartContext';
+import { useCartStore } from '../store/cartStore';
+import { useRestaurant, useMenu } from '../hooks/useRestaurants';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Restaurant() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [restaurant, setRestaurant] = useState(null);
-  const [menu, setMenu] = useState({});
-  const [loading, setLoading] = useState(true);
+  const parsedId = id ? parseInt(id, 10) : 0;
   
-  const { addToCart, getCartCount, getCartTotal } = useCart();
+  const { data: restaurant, isLoading: loadingRest } = useRestaurant(parsedId);
+  const { data: menu = {}, isLoading: loadingMenu } = useMenu(parsedId);
+  
+  const addToCart = useCartStore(state => state.addToCart);
+  const getCartCount = useCartStore(state => state.getCartCount);
+  const getCartTotal = useCartStore(state => state.getCartTotal);
 
-  useEffect(() => {
-    Promise.all([
-      fetch(`http://localhost:5001/api/restaurants/${id}`).then(r => r.json()),
-      fetch(`http://localhost:5001/api/menu/${id}`).then(r => r.json())
-    ]).then(([restData, menuData]) => {
-      setRestaurant(restData);
-      setMenu(menuData);
-      setLoading(false);
-    }).catch(err => {
-      console.error(err);
-      setLoading(false);
-    });
-  }, [id]);
+  const loading = loadingRest || loadingMenu;
 
   if (loading) return <div className="text-center py-20 animate-pulse text-xl">Loading...</div>;
   if (!restaurant) return <div className="text-center py-20">Restaurant not found</div>;

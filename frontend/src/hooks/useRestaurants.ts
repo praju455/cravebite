@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getRestaurants, getTopRestaurants, getRestaurantById } from '../api/restaurant.api';
+import { getRestaurants, getTopRestaurants, getRestaurantById, getMenu } from '../api/restaurant.api';
 
 export const useRestaurants = () => {
   return useQuery({
@@ -20,5 +20,13 @@ export const useRestaurant = (id: number) => {
     queryKey: ['restaurant', id],
     queryFn: () => getRestaurantById(id),
     enabled: !!id,
+  });
+};
+
+export const useMenu = (restaurantId: number) => {
+  return useQuery({
+    queryKey: ['menu', restaurantId],
+    queryFn: () => getMenu(restaurantId),
+    enabled: !!restaurantId,
   });
 };
