@@ -32,7 +32,7 @@ export default function Dashboard() {
         <div className="lg:col-span-2 glass-card p-6">
           <h2 className="text-xl font-bold mb-6">Revenue (Last 7 Days)</h2>
           <div className="h-80 w-full">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <BarChart data={revenueData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" vertical={false} />
                 <XAxis dataKey="date" stroke="#ffffff80" />
@@ -51,7 +51,7 @@ export default function Dashboard() {
         <div className="glass-card p-6 flex flex-col">
           <h2 className="text-xl font-bold mb-6">Orders by Status (Today)</h2>
           <div className="flex-1 min-h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <PieChart>
                 <Pie
                   data={orderStatusData}
