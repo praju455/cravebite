@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { pool } from '../../config/db';
 import { asyncHandler } from '../../utils/asyncHandler';
 import { ApiResponse } from '../../utils/ApiResponse';
+import { authenticate, adminOnly } from '../../middleware/auth';
 
 export class AdminController {
   static getDashboardStats = asyncHandler(async (req: Request, res: Response) => {
@@ -62,6 +63,9 @@ export class AdminController {
 }
 
 const router = Router();
+
+// All admin stats routes require authentication + admin role
+router.use(authenticate, adminOnly);
 
 router.get('/dashboard', AdminController.getDashboardStats);
 router.get('/popular-items', AdminController.getPopularItems);

@@ -31,31 +31,30 @@ export class AuthService {
 
   static async loginUser(data: any) {
     const { email, password } = data;
-
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (result.rows.length === 0) {
-      throw new ApiError(401, 'Invalid credentials');
-    }
-
+    if (result.rows.length === 0) throw new ApiError(401, 'Invalid credentials');
     const user = result.rows[0];
-    
-    if (!user.password) {
-        throw new ApiError(401, 'Invalid credentials');
-    }
-
+    if (!user.password) throw new ApiError(401, 'Invalid credentials');
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      throw new ApiError(401, 'Invalid credentials');
-    }
-
-    const token = jwt.sign({ id: user.user_id }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
-
+    if (!isMatch) throw new ApiError(401, 'Invalid credentials');
+    const token = jwt.sign({ id: user.user_id, isAdmin: user.is_admin }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
     return {
-      user: {
-        id: user.user_id,
-        name: user.name,
-        email: user.email,
-      },
+      user: { id: user.user_id, name: user.name, email: user.email, isAdmin: user.is_admin },
+      token,
+    };
+  }
+
+  static async adminLogin(data: any) {
+    const { email, password } = data;
+    const result = await pool.query('SELECT * FROM users WHERE email = $1 AND is_admin = TRUE', [email]);
+    if (result.rows.length === 0) throw new ApiError(403, 'Access denied. Not an admin account.');
+    const user = result.rows[0];
+    if (!user.password) throw new ApiError(401, 'Invalid credentials');
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new ApiError(401, 'Invalid credentials');
+    const token = jwt.sign({ id: user.user_id, isAdmin: true }, env.JWT_SECRET, { expiresIn: '8h' });
+    return {
+      admin: { id: user.user_id, name: user.name, email: user.email },
       token,
     };
   }

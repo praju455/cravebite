@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../api/axiosInstance';
+import { adminApi } from '../api/axiosInstance';
+import { useAdminStore } from '../store/adminStore';
+import { useNavigate } from 'react-router-dom';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   PieChart, Pie, Cell
 } from 'recharts';
-import { TrendingUp, Users, ShoppingBag, Bike, LayoutDashboard, ClipboardList, RefreshCw } from 'lucide-react';
+import { TrendingUp, Users, ShoppingBag, Bike, LayoutDashboard, ClipboardList, RefreshCw, LogOut } from 'lucide-react';
 import { getDashboardStats } from '../api/admin.api';
 
 const COLORS = ['#ff4d00', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ff7300'];
@@ -202,7 +204,7 @@ function UsersTab() {
   const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: ['adminUsers'],
     queryFn: async () => {
-      const res = await api.get('/stats/users');
+      const res = await adminApi.get('/stats/users');
       return res.data.data;
     },
     refetchInterval: 20000,
@@ -265,7 +267,7 @@ function AllOrdersTab() {
   const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: ['adminAllOrders'],
     queryFn: async () => {
-      const res = await api.get('/stats/orders');
+      const res = await adminApi.get('/stats/orders');
       return res.data.data;
     },
     refetchInterval: 20000,
@@ -333,15 +335,27 @@ function AllOrdersTab() {
 /* ─── Main Dashboard ─── */
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
+  const { admin, logoutAdmin } = useAdminStore();
+  const navigate = useNavigate();
+
+  const handleLogout = () => { logoutAdmin(); navigate('/admin/login'); };
 
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <p className="mt-1 text-sm" style={{ color: 'var(--text-secondary)' }}>
-          Live data — all numbers update automatically from the database
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <p className="mt-1 text-sm" style={{ color: 'var(--text-secondary)' }}>
+            Logged in as <span className="text-[#ff4d00] font-semibold">{admin?.name}</span> · Live data, auto-refreshes every 30s
+          </p>
+        </div>
+        <button onClick={handleLogout}
+          className="flex items-center space-x-2 px-4 py-2 rounded-full glass-card text-sm font-medium hover:text-red-400 transition-colors"
+          style={{ color: 'var(--text-secondary)' }}>
+          <LogOut className="w-4 h-4" />
+          <span>Logout</span>
+        </button>
       </div>
 
       {/* Tabs */}

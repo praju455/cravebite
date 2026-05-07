@@ -8,6 +8,7 @@ const router = Router();
 
 router.post('/register', authLimiter, validate(registerSchema), AuthController.register);
 router.post('/login', authLimiter, validate(loginSchema), AuthController.login);
+router.post('/admin-login', authLimiter, AuthController.adminLogin);
 router.post('/send-otp', authLimiter, AuthController.sendOtp);
 router.post('/verify-otp', authLimiter, AuthController.verifyOtp);
 

@@ -1,71 +1,133 @@
-# CraveBite - Online Food Delivery App
+# 🍔 CraveBite - Enterprise Food Delivery Engine
 
-A full-stack modern food delivery web application featuring a stunning dark UI with glassmorphism effects and dynamic animations.
+CraveBite is a high-performance, full-stack food delivery platform that prioritizes **Raw SQL Power** and **Premium User Experience**. Built with a Zomato-inspired aesthetic, it features a cinematic landing page, a secure 2-step OTP authentication system, and a real-time Admin Command Center.
 
-## Tech Stack
-- **Frontend**: React.js, Tailwind CSS v4, Framer Motion, Recharts, React Router
-- **Backend**: Node.js, Express.js
-- **Database**: PostgreSQL (Raw SQL queries using `pg` driver)
+---
 
-## Features
-- **Modern UI**: Dark theme (#0a0a0a) with #ff4d00 accents and glassmorphism cards.
-- **Restaurant Discovery**: Search and filter by cuisine type.
-- **Dynamic Cart**: Context-based cart with conflict resolution for multi-restaurant additions.
-- **Live Order Tracking**: Animated stepper showing real-time order status.
-- **Admin Dashboard**: Real-time KPI cards, Recharts data visualization (Revenue, Orders, Popular Items).
+## 🚀 Key Features
 
-## Setup Instructions
+- **Premium UI/UX**: Dark-themed glassmorphism interface with cinematic Ken Burns hero animations.
+- **Secure Auth**: 2-Step OTP-based authentication for consumers and secure Email/Password guard for Admins.
+- **Real-Time Admin Dashboard**: Live KPI tracking, revenue analytics via Recharts, and user/order management.
+- **Theme Engine**: Persistent Light/Dark mode with brand-consistent accents.
+- **SQL-First Architecture**: Business logic (rating calculations, delivery assignments, order processing) is handled directly by PostgreSQL triggers and procedures.
 
-### 1. Database Setup
-1. Ensure you have a PostgreSQL server running locally.
-2. The backend expects a database named `food_delivery`. 
-3. Execute the schema and seed files to initialize the database:
-```bash
-createdb food_delivery -U postgres
-psql -U postgres -d food_delivery -f backend/db/schema.sql
-psql -U postgres -d food_delivery -f backend/db/seed.sql
+---
+
+## 🛠 Tech Stack
+
+- **Frontend**: React 18, Tailwind CSS v4, Framer Motion, Recharts, Zustand.
+- **Backend**: Node.js (TypeScript), Express.js, JWT.
+- **Database**: PostgreSQL (No ORM - Pure SQL).
+- **Icons**: Lucide React.
+
+---
+
+## 📊 Database Architecture (The SQL Core)
+
+This project is a showcase of advanced PostgreSQL capabilities. We avoid ORMs to leverage the full power of relational database features.
+
+### Entity Relationship Diagram
+
+```mermaid
+erDiagram
+    USERS ||--o{ ORDERS : places
+    USERS ||--o{ REVIEWS : writes
+    RESTAURANTS ||--o{ MENU_ITEMS : owns
+    RESTAURANTS ||--o{ ORDERS : receives
+    RESTAURANTS ||--o{ REVIEWS : receives
+    ORDERS ||--o{ ORDER_ITEMS : contains
+    MENU_ITEMS ||--o{ ORDER_ITEMS : included_in
+    ORDERS ||--|| PAYMENTS : has
+    ORDERS ||--|| DELIVERIES : has
+    DELIVERY_AGENTS ||--o{ DELIVERIES : handles
 ```
-*(If your postgres credentials differ, update the `pool.js` environment variables or defaults).*
 
-### 2. Backend Setup
-1. Open a terminal and navigate to the `backend` directory.
-2. Install dependencies: `npm install`
-3. Start the server: `node server.js`
-*(The backend will run on port 5001).*
+### 🧠 SQL Objects & Concepts
 
-### 3. Frontend Setup
-1. Open another terminal and navigate to the `frontend` directory.
-2. Install dependencies: `npm install`
-3. Start the Vite dev server: `npm run dev`
-*(The app will be available at `http://localhost:5173`)*
+#### 1. Views (Abstraction Layer)
+- **`top_restaurants_view`**: Uses `RANK()` window functions to prioritize restaurants based on ratings and review volume.
+- **`popular_items_view`**: Aggregates sales data to identify trend-setting dishes.
+- **`order_summary_view`**: A complex 4-way JOIN that provides a human-readable snapshot of every transaction.
 
-## Database Architecture & SQL Concepts Used
+#### 2. Stored Procedures (Atomic Transactions)
+- **`place_order`**: An atomic procedure that accepts a JSON payload of items, calculates totals, inserts order records, and initializes payment state in a single transaction.
+- **`assign_delivery`**: Encapsulates the logic for finding an available agent and updating system state synchronously.
 
-This application avoids ORMs entirely in favor of advanced raw SQL concepts to ensure data integrity and performance directly at the database layer.
+#### 3. Triggers (Event-Driven Logic)
+- **`update_restaurant_rating`**: Automatically recalculates restaurant averages whenever a new review is posted.
+- **`update_agent_availability`**: Dynamically releases delivery agents back into the pool when an order is marked 'Delivered'.
 
-### 1. Constraints & Enums
-- **ENUMs**: `order_status`, `vehicle_type`, `payment_method`, and `payment_status` restrict columns to specific predefined values ensuring data consistency.
-- **Foreign Keys**: Used extensively with `ON DELETE CASCADE` or `ON DELETE SET NULL` to maintain relational integrity (e.g., deleting a restaurant deletes its menu items).
-- **Check Constraints**: E.g., `quantity INT NOT NULL CHECK (quantity > 0)` and `rating INT CHECK (rating BETWEEN 1 AND 5)`.
+#### 4. Constraints & Optimization
+- **Check Constraints**: Enforces business rules (e.g., quantities must be > 0).
+- **Partial Indexes**: Optimized for status-based lookups (e.g., `idx_orders_status`).
+- **Enums**: Strict typing for order and payment statuses.
 
-### 2. Triggers
-Triggers automatically execute logic upon certain database events:
-- **`update_restaurant_rating()`**: Triggered `AFTER INSERT ON reviews`. It automatically recalculates the average rating for a restaurant and updates the `restaurants` table.
-- **`update_agent_availability()`**: Triggered `AFTER UPDATE OF status ON orders`. When an order status is updated to 'Delivered', this trigger automatically finds the assigned delivery agent and sets their `is_available` flag back to `TRUE`, and sets the `delivered_time`.
+---
 
-### 3. Views
-Views abstract complex queries for easy consumption by the backend:
-- **`top_restaurants_view`**: Uses the `RANK() OVER (ORDER BY rating DESC, COUNT(rev.review_id) DESC)` window function to join restaurants and reviews and rank them.
-- **`popular_items_view`**: Uses an aggregate `SUM(oi.quantity)` joined across `menu_items`, `order_items`, and `restaurants`, and applies a window function to rank the best-selling items across the platform.
-- **`order_summary_view`**: A denormalized view joining `orders`, `users`, `restaurants`, and `payments` to easily display order history without writing complex JOINs in the Node.js controllers.
+## ⚙️ Installation & Setup
 
-### 4. Stored Procedures
-Procedures encapsulate business logic and transactions within the database:
-- **`place_order(user_id, restaurant_id, items JSON)`**: Processes an order entirely within the database. It takes a JSON array of items, parses it using `json_populate_recordset`, calculates the total amount, inserts into `orders`, loops to insert into `order_items`, creates a pending `payment` record, and finally returns the generated `order_id`. All inside an atomic transaction block.
-- **`assign_delivery(order_id)`**: Finds the first available delivery agent, inserts a new record into `deliveries`, marks the agent as unavailable (`is_available = FALSE`), and updates the order status to 'Out for Delivery'.
+### 1. Database Initialization
+```bash
+# Create the database
+createdb food_delivery
 
-### 5. Indexes
-Added on high-traffic lookup columns to speed up querying:
-- `idx_orders_user_id` on `orders(user_id)`
-- `idx_orders_status` on `orders(status)`
-- `idx_menu_items_restaurant_id` on `menu_items(restaurant_id)`
+# Run the schema and seed data
+psql -d food_delivery -f backend/db/schema.sql
+psql -d food_delivery -f backend/db/seed.sql
+```
+
+### 2. Backend Environment
+Navigate to `/backend`:
+```bash
+npm install
+npm run dev
+```
+*Server runs at `http://localhost:5001`*
+
+### 3. Frontend Environment
+Navigate to `/frontend`:
+```bash
+npm install
+npm run dev
+```
+*Client runs at `http://localhost:5173`*
+
+---
+
+## 🛡 Security & Access
+
+### Consumer Access
+- **Landing Page**: `/`
+- **Order Page**: `/restaurants`
+- **Login**: `/login` (via 2-Step OTP)
+
+### Admin Command Center
+- **Login**: `/admin/login`
+- **Dashboard**: `/admin/dashboard`
+- **Credentials**: `admin@cravebite.com` / `admin123`
+
+---
+
+## 📸 Project Snapshots
+
+- **Cinematic Hero**: Smooth Unsplash-powered image slideshow with Ken Burns zoom effects.
+- **Real-Time Stats**: Admin KPIs update every 30 seconds without page refresh.
+- **Dynamic Theming**: One-click toggle between sleek dark mode and high-contrast light mode.
+
+---
+
+### 📝 SQL Schema Reference
+
+| Table | Primary Key | Key Foreign Keys |
+|---|---|---|
+| `users` | `user_id` | - |
+| `restaurants` | `restaurant_id` | - |
+| `menu_items` | `item_id` | `restaurant_id` |
+| `orders` | `order_id` | `user_id`, `restaurant_id` |
+| `order_items` | `order_item_id` | `order_id`, `item_id` |
+| `deliveries` | `delivery_id` | `order_id`, `agent_id` |
+| `payments` | `payment_id` | `order_id` |
+
+---
+*Created with ❤️ for Bangalore's Foodies.*

@@ -125,11 +125,7 @@ export default function Landing() {
               className="px-10 py-4 bg-[#ff4d00] text-white text-lg font-bold rounded-full hover:bg-[#ff6a2b] transition-all shadow-[0_0_30px_rgba(255,77,0,0.5)] hover:shadow-[0_0_50px_rgba(255,77,0,0.7)] hover:scale-105 active:scale-95">
               Order Now 🍔
             </button>
-            <button onClick={() => navigate('/dashboard')}
-              className="px-8 py-4 border-2 border-white/40 text-white text-lg font-semibold rounded-full hover:bg-white/10 transition-all flex items-center space-x-2 backdrop-blur-sm">
-              <LayoutDashboard className="w-5 h-5" />
-              <span>Admin Dashboard</span>
-            </button>
+
           </motion.div>
 
           {/* Slide dot indicators */}
@@ -268,11 +264,7 @@ export default function Landing() {
 
           <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-gray-500 text-sm">© 2025 CraveBite. All rights reserved.</p>
-            <button onClick={() => navigate('/dashboard')}
-              className="flex items-center space-x-2 px-5 py-2.5 border border-white/20 rounded-full text-sm text-gray-300 hover:border-[#ff4d00] hover:text-[#ff4d00] transition-all">
-              <LayoutDashboard className="w-4 h-4" />
-              <span>Admin Dashboard</span>
-            </button>
+
           </div>
         </div>
       </footer>

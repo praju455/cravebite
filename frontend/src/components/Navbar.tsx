@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, User, LayoutDashboard, Sun, Moon, LogOut } from 'lucide-react';
+import { ShoppingBag, User, Sun, Moon, LogOut } from 'lucide-react';
 import { useThemeStore } from '../store/themeStore';
 import { useAuthStore } from '../store/authStore';
 
@@ -40,13 +40,6 @@ export default function Navbar() {
 
           {/* Right: Nav actions */}
           <div className="flex items-center space-x-4">
-            <Link to="/dashboard"
-              className="transition-colors flex items-center space-x-1 text-sm font-medium"
-              style={{ color: 'var(--text-secondary)' }}>
-              <LayoutDashboard className="w-5 h-5" />
-              <span className="hidden sm:inline">Admin</span>
-            </Link>
-
             {token ? (
               <>
                 <Link to="/profile"

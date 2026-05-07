@@ -6,25 +6,39 @@ import Restaurant from './pages/Restaurant';
 import Cart from './pages/Cart';
 import OrderTracking from './pages/OrderTracking';
 import Dashboard from './pages/Dashboard';
+import AdminLogin from './pages/AdminLogin';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { useAuthStore } from './store/authStore';
+import { useAdminStore } from './store/adminStore';
 
+// Protect consumer routes
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const token = useAuthStore((state) => state.token);
+  const token = useAuthStore((s) => s.token);
   if (!token) return <Navigate to="/login" />;
   return children;
 };
 
-// Hide Navbar on landing page (it has its own full-screen layout)
+// Protect admin routes — redirect to admin login if not logged in as admin
+const AdminRoute = ({ children }: { children: JSX.Element }) => {
+  const token = useAdminStore((s) => s.token);
+  if (!token) return <Navigate to="/admin/login" />;
+  return children;
+};
+
+// Pages that should NOT show the Navbar (full-screen layouts)
+const NO_NAVBAR_PATHS = ['/', '/admin/login'];
+
 function Layout({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation();
-  const isLanding = pathname === '/';
+  const isAdminDash = pathname.startsWith('/admin/dashboard');
+  const hideNav = NO_NAVBAR_PATHS.includes(pathname) || isAdminDash;
+
   return (
     <div className="min-h-screen">
-      {!isLanding && <Navbar />}
-      <main className={isLanding ? '' : 'container mx-auto px-4 py-8 relative z-10 pt-24'}>
+      {!hideNav && <Navbar />}
+      <main className={hideNav ? '' : 'container mx-auto px-4 py-8 relative z-10 pt-24'}>
         {children}
       </main>
     </div>
@@ -36,6 +50,7 @@ function App() {
     <Router>
       <Layout>
         <Routes>
+          {/* ── Consumer routes ── */}
           <Route path="/" element={<Landing />} />
           <Route path="/restaurants" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -43,10 +58,22 @@ function App() {
           <Route path="/restaurant/:id" element={<Restaurant />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/track/:id" element={<OrderTracking />} />
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={
             <ProtectedRoute><Profile /></ProtectedRoute>
           } />
+
+          {/* ── Admin routes ── */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={
+            <AdminRoute>
+              <div className="container mx-auto px-4 py-8 pt-24">
+                <Dashboard />
+              </div>
+            </AdminRoute>
+          } />
+
+          {/* Legacy /dashboard redirect to admin login */}
+          <Route path="/dashboard" element={<Navigate to="/admin/login" />} />
         </Routes>
       </Layout>
     </Router>
