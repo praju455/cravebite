@@ -12,11 +12,11 @@ export const getTopRestaurants = async (): Promise<Restaurant[]> => {
 };
 
 export const getRestaurantById = async (id: number): Promise<Restaurant> => {
-  const { data } = await api.get<ApiResponse<Restaurant>>(`/restaurants/\${id}`);
+  const { data } = await api.get<ApiResponse<Restaurant>>(`/restaurants/${id}`);
   return data.data;
 };
 
 export const getMenu = async (restaurantId: number): Promise<Record<string, any[]>> => {
-  const { data } = await api.get<ApiResponse<Record<string, any[]>>>(`/menu/\${restaurantId}`);
+  const { data } = await api.get<ApiResponse<Record<string, any[]>>>(`/menu/${restaurantId}`);
   return data.data;
 };
