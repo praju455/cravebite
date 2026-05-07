@@ -28,7 +28,9 @@ INSERT INTO restaurants (name, cuisine_type, city, rating, delivery_time_mins, i
 ('Meghana Foods', 'Indian', 'Bangalore', 4.8, 45, 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=500&q=80'),
 ('Social', 'Continental', 'Bangalore', 4.5, 40, 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=500&q=80'),
 ('Truffles', 'Cafe', 'Bangalore', 4.6, 35, 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&q=80'),
-('Natural Ice Cream', 'Desserts', 'Bangalore', 4.9, 20, 'https://images.unsplash.com/photo-1558500665-27f6b92f750b?w=500&q=80');
+('Natural Ice Cream', 'Desserts', 'Bangalore', 4.9, 20, 'https://images.unsplash.com/photo-1563805042-7684c889e1eb?w=500&q=80'),
+('KFC', 'Fast Food', 'Bangalore', 4.3, 25, 'https://images.unsplash.com/photo-1513639776629-7b61b0ac49cb?w=500&q=80'),
+('Paradise Biryani', 'Indian', 'Bangalore', 4.5, 40, 'https://images.unsplash.com/photo-1633383718081-22ac93e3db65?w=500&q=80');
 
 -- 4. Menu Items (8 items per restaurant)
 -- Burger King (Rest ID: 1)
@@ -163,3 +165,17 @@ BEGIN
         END IF;
     END LOOP;
 END $$;
+
+-- KFC (Rest ID: 7)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(7, 'Zinger Burger', 'Signature chicken zinger', 199.00, 'Mains', FALSE, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80'),
+(7, 'Hot Wings (4pc)', 'Spicy chicken wings', 149.00, 'Starters', FALSE, 'https://images.unsplash.com/photo-1524114664604-cd8133cd67ad?w=500&q=80'),
+(7, 'French Fries', 'Crispy fries', 99.00, 'Starters', TRUE, 'https://images.unsplash.com/photo-1576107232684-1279f3908594?w=500&q=80'),
+(7, 'Pepsi', 'Refreshing beverage', 60.00, 'Drinks', TRUE, 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&q=80');
+
+-- Paradise Biryani (Rest ID: 8)
+INSERT INTO menu_items (restaurant_id, name, description, price, category, is_veg, image_url) VALUES
+(8, 'Chicken Dum Biryani', 'Authentic hyderabadi biryani', 320.00, 'Mains', FALSE, 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80'),
+(8, 'Mutton Dum Biryani', 'Special mutton dum biryani', 420.00, 'Mains', FALSE, 'https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=500&q=80'),
+(8, 'Chicken 65', 'Spicy deep fried chicken', 250.00, 'Starters', FALSE, 'https://images.unsplash.com/photo-1599487405270-87050a41d9c7?w=500&q=80'),
+(8, 'Double Ka Meetha', 'Traditional bread pudding', 120.00, 'Desserts', TRUE, 'https://images.unsplash.com/photo-1589115798835-212d1b73e51a?w=500&q=80');
