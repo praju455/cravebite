@@ -56,7 +56,7 @@ export default function Restaurant() {
       <div className="space-y-12">
         {Object.entries(menu).map(([category, items]) => (
           <div key={category}>
-            <h2 className="text-2xl font-bold mb-6 text-white border-b border-white/10 pb-2">{category}</h2>
+            <h2 className="text-2xl font-bold mb-6 border-b pb-2" style={{ color: 'var(--text-primary)', borderColor: 'var(--border-color)' }}>{category}</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {items.map(item => (
                 <MenuItem key={item.item_id} item={item} onAdd={(i) => addToCart(i, parseInt(id))} />
