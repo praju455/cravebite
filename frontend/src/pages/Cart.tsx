@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../components/CartContext';
+import { useCartStore } from '../store/cartStore';
+import { useAuthStore } from '../store/authStore';
+import { api } from '../api/axiosInstance';
 import { Trash2, CreditCard, Banknote, Wallet, Smartphone } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Cart() {
-  const { cart, removeFromCart, getCartTotal, clearCart } = useCart();
+  const cartItems = useCartStore(state => state.items);
+  const restaurant_id = useCartStore(state => state.restaurant_id);
+  const removeFromCart = useCartStore(state => state.removeFromCart);
+  const getCartTotal = useCartStore(state => state.getCartTotal);
+  const clearCart = useCartStore(state => state.clearCart);
+  const user = useAuthStore(state => state.user);
+  
   const navigate = useNavigate();
   const [address, setAddress] = useState('123, Default Street, Bangalore');
   const [method, setMethod] = useState('UPI');
@@ -18,7 +26,7 @@ export default function Cart() {
     { id: 'Wallet', icon: Wallet, label: 'Digital Wallet' },
   ];
 
-  if (cart.items.length === 0) {
+  if (cartItems.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
         <div className="w-48 h-48 mb-8 opacity-20">
@@ -38,32 +46,25 @@ export default function Cart() {
   const handlePlaceOrder = async () => {
     setLoading(true);
     try {
-      // In a real app, user_id would come from auth context
-      const userId = 1; // using user 1 for demo
+      if (!user) {
+        alert("Please login first");
+        return;
+      }
       
-      const items = cart.items.map(i => ({
+      const items = cartItems.map(i => ({
         item_id: i.item_id,
         quantity: i.quantity,
         unit_price: i.price
       }));
 
-      const res = await fetch('http://localhost:5001/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user_id: userId,
-          restaurant_id: cart.restaurant_id,
-          items: items
-        })
+      const { data } = await api.post('/orders', {
+        restaurant_id: restaurant_id,
+        items: items
       });
       
-      const data = await res.json();
-      if (res.ok) {
-        // Also trigger the dummy assignment endpoint to simulate real-world process slightly faster
-        await fetch(`http://localhost:5001/api/orders/${data.order_id}/assign`, { method: 'POST' });
-        
+      if (data.success) {
         clearCart();
-        navigate(`/track/${data.order_id}`);
+        navigate(`/track/\${data.data.order_id}`);
       } else {
         alert(data.error);
       }
@@ -81,7 +82,7 @@ export default function Cart() {
       <div className="lg:col-span-2 space-y-6">
         <h2 className="text-2xl font-bold">Order Summary</h2>
         <div className="glass-card p-6 space-y-4">
-          {cart.items.map(item => (
+          {cartItems.map(item => (
             <motion.div layout key={item.item_id} className="flex items-center justify-between border-b border-white/5 pb-4 last:border-0 last:pb-0">
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 rounded-lg overflow-hidden bg-white/10">
@@ -93,7 +94,7 @@ export default function Cart() {
                 </div>
               </div>
               <div className="flex items-center space-x-4">
-                <p className="font-bold text-lg">₹{(item.price * item.quantity).toFixed(2)}</p>
+                <p className="font-bold text-lg">₹{(parseFloat(item.price) * item.quantity).toFixed(2)}</p>
                 <button 
                   onClick={() => removeFromCart(item.item_id)}
                   className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
