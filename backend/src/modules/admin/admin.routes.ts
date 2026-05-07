@@ -46,14 +46,28 @@ export class AdminController {
     `);
     res.json(new ApiResponse(200, result.rows));
   });
+  static getAllUsers = asyncHandler(async (req: Request, res: Response) => {
+    const result = await pool.query(
+      `SELECT user_id, name, email, phone, address, created_at FROM users ORDER BY created_at DESC`
+    );
+    res.json(new ApiResponse(200, result.rows));
+  });
+
+  static getAllOrders = asyncHandler(async (req: Request, res: Response) => {
+    const result = await pool.query(
+      `SELECT * FROM order_summary_view ORDER BY created_at DESC LIMIT 50`
+    );
+    res.json(new ApiResponse(200, result.rows));
+  });
 }
 
 const router = Router();
 
-// In a real app, protect this with an Admin Auth Middleware
 router.get('/dashboard', AdminController.getDashboardStats);
 router.get('/popular-items', AdminController.getPopularItems);
 router.get('/revenue', AdminController.getRevenueStats);
 router.get('/orders-today', AdminController.getOrdersToday);
+router.get('/users', AdminController.getAllUsers);
+router.get('/orders', AdminController.getAllOrders);
 
 export default router;

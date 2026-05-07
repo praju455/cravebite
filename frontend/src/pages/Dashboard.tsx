@@ -1,23 +1,78 @@
-import { useDashboardStats } from '../hooks/useAdmin';
-import { 
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../api/axiosInstance';
+import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   PieChart, Pie, Cell
 } from 'recharts';
-import { TrendingUp, Users, ShoppingBag, Bike } from 'lucide-react';
+import { TrendingUp, Users, ShoppingBag, Bike, LayoutDashboard, ClipboardList, RefreshCw } from 'lucide-react';
+import { getDashboardStats } from '../api/admin.api';
 
-export default function Dashboard() {
-  const { data, isLoading: loading } = useDashboardStats();
+const COLORS = ['#ff4d00', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ff7300'];
 
-  if (loading) return <div className="text-center py-20 text-xl animate-pulse">Loading Dashboard...</div>;
-  if (!data) return <div className="text-center py-20 text-xl text-red-500">Failed to load stats.</div>;
+const TABS = [
+  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+  { id: 'users', label: 'Users', icon: Users },
+  { id: 'orders', label: 'All Orders', icon: ClipboardList },
+];
+
+/* ─── KPI Card ─── */
+function KPICard({ title, value, icon: Icon, color }: any) {
+  return (
+    <div className="glass-card p-6 flex items-center justify-between">
+      <div>
+        <p className="text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>{title}</p>
+        <p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{value}</p>
+      </div>
+      <div className={`p-4 rounded-xl bg-white/5 ${color}`}>
+        <Icon className="w-8 h-8" />
+      </div>
+    </div>
+  );
+}
+
+/* ─── Status Badge ─── */
+function StatusBadge({ status }: { status: string }) {
+  const styles: Record<string, string> = {
+    'Delivered': 'bg-green-500/20 text-green-400',
+    'Cancelled': 'bg-red-500/20 text-red-400',
+    'Out for Delivery': 'bg-blue-500/20 text-blue-400',
+    'Placed': 'bg-yellow-500/20 text-yellow-400',
+    'Preparing': 'bg-orange-500/20 text-orange-400',
+    'Confirmed': 'bg-purple-500/20 text-purple-400',
+  };
+  return (
+    <span className={`px-2 py-1 rounded-md text-xs font-bold ${styles[status] || 'bg-white/10 text-white'}`}>
+      {status}
+    </span>
+  );
+}
+
+/* ─── Overview Tab ─── */
+function OverviewTab() {
+  const { data, isLoading, refetch, isFetching } = useQuery({
+    queryKey: ['dashboardStats'],
+    queryFn: getDashboardStats,
+    refetchInterval: 30000,
+    staleTime: 15000,
+  });
+
+  if (isLoading) return <div className="text-center py-20 animate-pulse" style={{ color: 'var(--text-secondary)' }}>Loading dashboard...</div>;
+  if (!data) return <div className="text-center py-20 text-red-500">Failed to load stats.</div>;
 
   const { kpi, revenueData, orderStatusData, topItems } = data;
 
-  const COLORS = ['#ff4d00', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ff7300'];
-
   return (
-    <div className="space-y-8 pb-12">
-      <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+    <div className="space-y-8">
+      {/* Refresh indicator */}
+      <div className="flex justify-end">
+        <button onClick={() => refetch()}
+          className="flex items-center space-x-2 text-sm px-4 py-2 rounded-full glass-card hover:text-[#ff4d00] transition-colors"
+          style={{ color: 'var(--text-secondary)' }}>
+          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#ff4d00]' : ''}`} />
+          <span>{isFetching ? 'Refreshing...' : 'Refresh'}</span>
+        </button>
+      </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -34,12 +89,12 @@ export default function Dashboard() {
           <div className="h-80 w-full">
             <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <BarChart data={revenueData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff20" vertical={false} />
-                <XAxis dataKey="date" stroke="#ffffff80" />
-                <YAxis stroke="#ffffff80" tickFormatter={(value) => `₹${value}`} />
-                <RechartsTooltip 
-                  cursor={{fill: 'rgba(255, 255, 255, 0.05)'}}
-                  contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }} 
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" vertical={false} />
+                <XAxis dataKey="date" stroke="var(--chart-axis)" />
+                <YAxis stroke="var(--chart-axis)" tickFormatter={(v) => `₹${v}`} />
+                <RechartsTooltip
+                  cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                  contentStyle={{ backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: '8px', color: 'var(--text-primary)' }}
                 />
                 <Bar dataKey="revenue" fill="#ff4d00" radius={[4, 4, 0, 0]} />
               </BarChart>
@@ -50,47 +105,45 @@ export default function Dashboard() {
         {/* Order Status Pie */}
         <div className="glass-card p-6 flex flex-col">
           <h2 className="text-xl font-bold mb-6">Orders by Status (Today)</h2>
-          <div className="flex-1 min-h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
-              <PieChart>
-                <Pie
-                  data={orderStatusData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {orderStatusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <RechartsTooltip 
-                  contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }} 
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="grid grid-cols-2 gap-2 mt-4">
-            {orderStatusData.map((entry, index) => (
-              <div key={entry.name} className="flex items-center space-x-2 text-sm">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
-                <span className="text-gray-300">{entry.name} ({entry.value})</span>
+          {orderStatusData.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center" style={{ color: 'var(--text-muted)' }}>
+              No orders today yet
+            </div>
+          ) : (
+            <>
+              <div className="flex-1 min-h-[240px] w-full">
+                <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+                  <PieChart>
+                    <Pie data={orderStatusData} cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={5} dataKey="value">
+                      {orderStatusData.map((_: any, index: number) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip contentStyle={{ backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--tooltip-border)', borderRadius: '8px', color: 'var(--text-primary)' }} />
+                  </PieChart>
+                </ResponsiveContainer>
               </div>
-            ))}
-          </div>
+              <div className="grid grid-cols-2 gap-2 mt-4">
+                {orderStatusData.map((entry: any, index: number) => (
+                  <div key={entry.name} className="flex items-center space-x-2 text-sm">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                    <span style={{ color: 'var(--text-secondary)' }}>{entry.name} ({entry.value})</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Tables Row */}
+      {/* Bottom tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Orders */}
-        <div className="glass-card p-6 overflow-hidden flex flex-col">
+        <div className="glass-card p-6">
           <h2 className="text-xl font-bold mb-6">Recent Orders</h2>
-          <div className="overflow-x-auto flex-1">
+          <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="text-gray-400 bg-white/5">
+              <thead style={{ color: 'var(--text-muted)' }} className="bg-white/5">
                 <tr>
                   <th className="px-4 py-3 rounded-l-lg">Order ID</th>
                   <th className="px-4 py-3">Restaurant</th>
@@ -99,20 +152,12 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {kpi.recentOrders.map(order => (
+                {kpi.recentOrders.map((order: any) => (
                   <tr key={order.order_id} className="hover:bg-white/5 transition-colors">
-                    <td className="px-4 py-4 font-medium">#{order.order_id}</td>
-                    <td className="px-4 py-4 text-gray-300">{order.restaurant_name}</td>
-                    <td className="px-4 py-4">₹{Number(order.total_amount).toFixed(2)}</td>
-                    <td className="px-4 py-4">
-                      <span className={`px-2 py-1 rounded-md text-xs font-bold ${
-                        order.status === 'Delivered' ? 'bg-green-500/20 text-green-400' :
-                        order.status === 'Cancelled' ? 'bg-red-500/20 text-red-400' :
-                        'bg-blue-500/20 text-blue-400'
-                      }`}>
-                        {order.status}
-                      </span>
-                    </td>
+                    <td className="px-4 py-3 font-medium">#{order.order_id}</td>
+                    <td className="px-4 py-3" style={{ color: 'var(--text-secondary)' }}>{order.restaurant_name}</td>
+                    <td className="px-4 py-3">₹{Number(order.total_amount).toFixed(2)}</td>
+                    <td className="px-4 py-3"><StatusBadge status={order.status} /></td>
                   </tr>
                 ))}
               </tbody>
@@ -121,11 +166,11 @@ export default function Dashboard() {
         </div>
 
         {/* Popular Items */}
-        <div className="glass-card p-6 overflow-hidden flex flex-col">
+        <div className="glass-card p-6">
           <h2 className="text-xl font-bold mb-6">Popular Items</h2>
-          <div className="overflow-x-auto flex-1">
+          <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="text-gray-400 bg-white/5">
+              <thead style={{ color: 'var(--text-muted)' }} className="bg-white/5">
                 <tr>
                   <th className="px-4 py-3 rounded-l-lg">Item</th>
                   <th className="px-4 py-3">Restaurant</th>
@@ -133,14 +178,14 @@ export default function Dashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {topItems.map((item, idx) => (
+                {topItems.map((item: any, idx: number) => (
                   <tr key={item.item_id} className="hover:bg-white/5 transition-colors">
-                    <td className="px-4 py-4 flex items-center space-x-3">
-                      <span className="text-gray-500 font-bold text-xs w-4">{idx + 1}</span>
+                    <td className="px-4 py-3 flex items-center space-x-3">
+                      <span className="font-bold text-xs w-4" style={{ color: 'var(--text-muted)' }}>{idx + 1}</span>
                       <span className="font-medium">{item.item_name}</span>
                     </td>
-                    <td className="px-4 py-4 text-gray-300">{item.restaurant_name}</td>
-                    <td className="px-4 py-4 text-right font-bold text-[#ff4d00]">{item.total_sold}</td>
+                    <td className="px-4 py-3" style={{ color: 'var(--text-secondary)' }}>{item.restaurant_name}</td>
+                    <td className="px-4 py-3 text-right font-bold text-[#ff4d00]">{item.total_sold}</td>
                   </tr>
                 ))}
               </tbody>
@@ -152,16 +197,176 @@ export default function Dashboard() {
   );
 }
 
-function KPICard({ title, value, icon: Icon, color }: any) {
+/* ─── Users Tab ─── */
+function UsersTab() {
+  const { data, isLoading, isFetching, refetch } = useQuery({
+    queryKey: ['adminUsers'],
+    queryFn: async () => {
+      const res = await api.get('/stats/users');
+      return res.data.data;
+    },
+    refetchInterval: 20000,
+  });
+
+  if (isLoading) return <div className="text-center py-20 animate-pulse" style={{ color: 'var(--text-secondary)' }}>Loading users...</div>;
+
   return (
-    <div className="glass-card p-6 flex items-center justify-between">
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-bold">Registered Users</h2>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+            {data?.length || 0} total users — updates automatically every 20s
+          </p>
+        </div>
+        <button onClick={() => refetch()}
+          className="flex items-center space-x-2 text-sm px-4 py-2 rounded-full glass-card hover:text-[#ff4d00] transition-colors"
+          style={{ color: 'var(--text-secondary)' }}>
+          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#ff4d00]' : ''}`} />
+          <span>Refresh</span>
+        </button>
+      </div>
+      <div className="glass-card overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead style={{ color: 'var(--text-muted)' }} className="bg-white/5 text-xs uppercase tracking-wider">
+              <tr>
+                <th className="px-5 py-4">ID</th>
+                <th className="px-5 py-4">Name</th>
+                <th className="px-5 py-4">Email</th>
+                <th className="px-5 py-4">Phone</th>
+                <th className="px-5 py-4">Address</th>
+                <th className="px-5 py-4">Joined</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {data?.map((user: any) => (
+                <tr key={user.user_id} className="hover:bg-white/5 transition-colors">
+                  <td className="px-5 py-4 font-mono text-xs" style={{ color: 'var(--text-muted)' }}>#{user.user_id}</td>
+                  <td className="px-5 py-4 font-semibold">{user.name}</td>
+                  <td className="px-5 py-4" style={{ color: 'var(--text-secondary)' }}>{user.email}</td>
+                  <td className="px-5 py-4" style={{ color: 'var(--text-secondary)' }}>{user.phone || '—'}</td>
+                  <td className="px-5 py-4 max-w-[200px] truncate" style={{ color: 'var(--text-secondary)' }}>{user.address || '—'}</td>
+                  <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-muted)' }}>
+                    {new Date(user.created_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── All Orders Tab ─── */
+function AllOrdersTab() {
+  const { data, isLoading, isFetching, refetch } = useQuery({
+    queryKey: ['adminAllOrders'],
+    queryFn: async () => {
+      const res = await api.get('/stats/orders');
+      return res.data.data;
+    },
+    refetchInterval: 20000,
+  });
+
+  if (isLoading) return <div className="text-center py-20 animate-pulse" style={{ color: 'var(--text-secondary)' }}>Loading orders...</div>;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-2xl font-bold">All Orders</h2>
+          <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
+            {data?.length || 0} orders — live data from database
+          </p>
+        </div>
+        <button onClick={() => refetch()}
+          className="flex items-center space-x-2 text-sm px-4 py-2 rounded-full glass-card hover:text-[#ff4d00] transition-colors"
+          style={{ color: 'var(--text-secondary)' }}>
+          <RefreshCw className={`w-4 h-4 ${isFetching ? 'animate-spin text-[#ff4d00]' : ''}`} />
+          <span>Refresh</span>
+        </button>
+      </div>
+      <div className="glass-card overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead style={{ color: 'var(--text-muted)' }} className="bg-white/5 text-xs uppercase tracking-wider">
+              <tr>
+                <th className="px-5 py-4">Order ID</th>
+                <th className="px-5 py-4">Customer</th>
+                <th className="px-5 py-4">Restaurant</th>
+                <th className="px-5 py-4">Amount</th>
+                <th className="px-5 py-4">Payment</th>
+                <th className="px-5 py-4">Status</th>
+                <th className="px-5 py-4">Date</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {data?.map((order: any) => (
+                <tr key={order.order_id} className="hover:bg-white/5 transition-colors">
+                  <td className="px-5 py-4 font-mono text-xs font-bold">#{order.order_id}</td>
+                  <td className="px-5 py-4">
+                    <div className="font-medium">{order.user_name}</div>
+                    <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{order.user_email}</div>
+                  </td>
+                  <td className="px-5 py-4" style={{ color: 'var(--text-secondary)' }}>{order.restaurant_name}</td>
+                  <td className="px-5 py-4 font-bold text-[#ff4d00]">₹{Number(order.total_amount).toFixed(0)}</td>
+                  <td className="px-5 py-4">
+                    <span className="text-xs px-2 py-1 rounded bg-white/10">{order.payment_method || 'Cash'}</span>
+                  </td>
+                  <td className="px-5 py-4"><StatusBadge status={order.status} /></td>
+                  <td className="px-5 py-4 text-xs" style={{ color: 'var(--text-muted)' }}>
+                    {new Date(order.created_at).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' })}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main Dashboard ─── */
+export default function Dashboard() {
+  const [activeTab, setActiveTab] = useState('overview');
+
+  return (
+    <div className="space-y-8 pb-16">
+      {/* Header */}
       <div>
-        <p className="text-gray-400 text-sm font-medium mb-1">{title}</p>
-        <p className="text-3xl font-bold text-white">{value}</p>
+        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <p className="mt-1 text-sm" style={{ color: 'var(--text-secondary)' }}>
+          Live data — all numbers update automatically from the database
+        </p>
       </div>
-      <div className={`p-4 rounded-xl bg-white/5 ${color}`}>
-        <Icon className="w-8 h-8" />
+
+      {/* Tabs */}
+      <div className="flex space-x-2 border-b" style={{ borderColor: 'var(--border-color)' }}>
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex items-center space-x-2 px-5 py-3 text-sm font-semibold border-b-2 transition-colors ${
+              activeTab === tab.id
+                ? 'border-[#ff4d00] text-[#ff4d00]'
+                : 'border-transparent hover:text-[#ff4d00]'
+            }`}
+            style={{ color: activeTab === tab.id ? '#ff4d00' : 'var(--text-secondary)' }}
+          >
+            <tab.icon className="w-4 h-4" />
+            <span>{tab.label}</span>
+          </button>
+        ))}
       </div>
+
+      {/* Tab Content */}
+      {activeTab === 'overview' && <OverviewTab />}
+      {activeTab === 'users'    && <UsersTab />}
+      {activeTab === 'orders'   && <AllOrdersTab />}
     </div>
   );
 }
