@@ -8,7 +8,7 @@ export class RestaurantService {
     if (redisClient.isOpen) {
       try {
         const cached = await redisClient.get('restaurants:all');
-        if (cached) return JSON.parse(cached);
+        if (cached) return JSON.parse(cached.toString());
       } catch (err) {
         // Continue without cache if Redis fails
       }
@@ -33,7 +33,7 @@ export class RestaurantService {
     if (redisClient.isOpen) {
       try {
         const cached = await redisClient.get('restaurants:top');
-        if (cached) return JSON.parse(cached);
+        if (cached) return JSON.parse(cached.toString());
       } catch (err) {
         // Continue without cache if Redis fails
       }

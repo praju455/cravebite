@@ -9,7 +9,7 @@ export class MenuService {
     if (redisClient.isOpen) {
       try {
         const cached = await redisClient.get(cacheKey);
-        if (cached) return JSON.parse(cached);
+        if (cached) return JSON.parse(cached.toString());
       } catch (err) {
         // Continue without cache if Redis fails
       }
