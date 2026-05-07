@@ -3,7 +3,7 @@ import { redisClient } from '../../config/redis';
 
 export class MenuService {
   static async getMenuByRestaurant(restaurantId: number) {
-    const cacheKey = `menu:\${restaurantId}`;
+    const cacheKey = `menu:${restaurantId}`;
     const cached = await redisClient.get(cacheKey);
     if (cached) return JSON.parse(cached);
 
